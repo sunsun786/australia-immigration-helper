@@ -1,0 +1,3243 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>澳洲移民指南</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 添加字体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- 添加图标 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- 在head标签中添加 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary-blue: rgb(0, 77, 142);
+            --primary-light: rgba(0, 77, 142, 0.1);
+            --primary-hover: rgba(0, 77, 142, 0.8);
+            --secondary-blue: rgb(51, 122, 183);
+            --light-blue: #f0f7ff;
+            --lighter-blue: #e6f0f9;
+            --dark-blue: rgb(0, 51, 102);
+            --text-blue: rgb(41, 98, 147);
+            --border-blue: rgba(0, 77, 142, 0.2);
+            --card-bg: rgb(242, 242, 242);
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: linear-gradient(135deg, var(--light-blue) 0%, var(--lighter-blue) 100%);
+            min-height: 100vh;
+        }
+        
+        /* 卡片悬浮效果 */
+        .score-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid var(--border-blue);
+            background: white;
+            backdrop-filter: blur(10px);
+            transform: translateY(0);
+        }
+        .score-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 77, 142, 0.1);
+            border-color: var(--primary-blue);
+        }
+
+        /* 按钮点击效果 */
+        .visa-type-btn {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(0);
+            border: 1px solid var(--border-blue);
+            background: white;
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            font-size: 1.125rem;  /* 18px */
+        }
+        .visa-type-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 77, 142, 0.1);
+            border-color: var(--primary-blue);
+        }
+        .visa-type-btn.active {
+            background: white;
+            border-color: var(--primary-blue);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 77, 142, 0.15);
+        }
+
+        /* 进度条动画 */
+        .progress-bar {
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* 选择框样式优化 */
+        select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236B7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            padding-right: 2.5rem;
+            -webkit-appearance: none;
+            appearance: none;
+            transition: all 0.3s ease;
+        }
+        select:focus {
+            box-shadow: 0 0 0 3px rgba(0, 77, 142, 0.2);
+        }
+
+        /* 添加滚动条样式 */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgb(0, 77, 142);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-hover);
+        }
+
+        /* 添加数字变化动画 */
+        .score-number {
+            transition: all 0.3s ease;
+        }
+
+        /* 复选框样式优化 */
+        input[type="checkbox"] {
+            position: relative;
+            width: 1.5em;
+            height: 1.5em;
+            border: 2px solid rgb(0, 77, 142);
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        input[type="checkbox"]:checked {
+            background-color: rgb(0, 77, 142);
+            border-color: rgb(0, 77, 142);
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        
+        .animate-shimmer {
+            animation: shimmer 3s infinite linear;
+        }
+        
+        #progressBar {
+            transition: width 0.7s cubic-bezier(0.34, 1.56, 0.64, 1),
+                        background-color 0.5s ease;
+        }
+        
+        #totalScore {
+            transition: color 0.3s ease;
+        }
+
+        /* 签证信息面板的动效 */
+        #visaInfo {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        #visaInfo.hidden {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        /* 评分卡片的动效 */
+        #scoreCards {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        #scoreCards.hidden {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        /* 在现有样式表中添加以下内容 */
+        .error-message {
+            display: none;
+            color: #dc2626;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .password-input {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #666;
+        }
+
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: -10px 0 20px;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .phone-input {
+            display: flex;
+            gap: 10px;
+        }
+
+        .verify-code-btn {
+            padding: 0 15px;
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        .verify-code-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .agreement {
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .agreement a {
+            color: var(--primary-blue);
+            text-decoration: none;
+        }
+
+        .agreement a:hover {
+            text-decoration: underline;
+        }
+
+        .loading-spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .submit-button.loading .button-text {
+            display: none;
+        }
+
+        .submit-button.loading .loading-spinner {
+            display: block;
+        }
+
+        /* 添加到现有的style标签中 */
+        #contactCard.show {
+            transform: scale(1);
+        }
+
+        #chatWidget button:hover {
+            box-shadow: 0 8px 16px rgba(0, 77, 142, 0.2);
+        }
+
+        .contact-item {
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover {
+            background: var(--primary-light);
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+        }
+
+        /* 联系方式卡片动画 */
+        #contactCard {
+            box-shadow: 0 10px 25px rgba(0, 77, 142, 0.1);
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        #contactCard.show {
+            transform: scale(1);
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* 联系方式项目悬浮效果 */
+        .contact-item {
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover {
+            transform: translateY(-2px);
+        }
+
+        /* 悬浮按钮阴影效果 */
+        #chatWidget button {
+            box-shadow: 0 4px 12px rgba(0, 77, 142, 0.2);
+        }
+
+        #chatWidget button:hover {
+            box-shadow: 0 8px 24px rgba(0, 77, 142, 0.3);
+        }
+
+        /* 添加新的样式 */
+        /* 数据卡片动效 */
+        .stat-card {
+            transition: all 0.3s ease;
+            transform: translateY(0);
+            opacity: 0;
+            animation: slideUp 0.5s ease forwards;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 77, 142, 0.1);
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 为每个卡片添加延迟动画 */
+        .stat-card:nth-child(1) { animation-delay: 0.1s; }
+        .stat-card:nth-child(2) { animation-delay: 0.2s; }
+        .stat-card:nth-child(3) { animation-delay: 0.3s; }
+        .stat-card:nth-child(4) { animation-delay: 0.4s; }
+
+        /* 图表容器动效 */
+        .chart-container {
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: scale(0.95);
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .chart-container:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 24px rgba(0, 77, 142, 0.15);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* 为每个图表添加延迟动画 */
+        .chart-container:nth-child(1) { animation-delay: 0.5s; }
+        .chart-container:nth-child(2) { animation-delay: 0.6s; }
+        .chart-container:nth-child(3) { animation-delay: 0.7s; }
+        .chart-container:nth-child(4) { animation-delay: 0.8s; }
+
+        /* 数字增长动画 */
+        .number-animate {
+            animation: countUp 2s ease-out forwards;
+        }
+
+        @keyframes countUp {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* 渐变背景动画 */
+        .gradient-animate {
+            background: linear-gradient(120deg, var(--primary-blue), var(--secondary-blue));
+            background-size: 200% 200%;
+            animation: gradientMove 8s ease infinite;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-[var(--light-blue)] to-[var(--lighter-blue)]">
+    <!-- 新增顶部工具栏 -->
+    <!-- 第一层：标题层 -->
+    <div class="bg-[rgb(6,27,54)] text-white border-b border-[rgba(255,255,255,0.1)]">
+        <div class="max-w-[1400px] mx-auto px-6">
+            <!-- 修改标题层的代码 -->
+            <div class="flex items-center justify-center" style="height: 75px;">
+                <!-- 修改 logo 图片路径 -->
+                <img src="./images/logo.png" alt="澳洲移民助手" class="h-10 mr-1">
+                <span class="text-2xl font-medium text-white">澳洲移民助手</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 第二层：导航层 -->
+    <div class="bg-[rgb(6,27,54)] text-white border-b border-[rgba(255,255,255,0.1)]" style="background: rgba(6,27,54,0.9)">
+        <div class="max-w-[1400px] mx-auto px-6">
+            <div class="flex items-center justify-end" style="height: 50px;">
+                <!-- 搜索框 -->
+                <div class="relative flex items-center">
+                    <input type="text" 
+                           class="bg-white/10 text-white placeholder-white/50 border border-white/20 rounded-lg pl-4 pr-10 py-2 w-0 focus:w-64 opacity-0 transition-all duration-300 ease-out"
+                           placeholder="搜索职业、签证类型..."
+                           id="searchInput"
+                           oninput="handleSearch(this.value)">
+                    <button class="p-2 text-white/80 hover:text-white transition-colors absolute right-0"
+                            onclick="toggleSearch()">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    
+                    <!-- 添加搜索结果下拉框 -->
+                    <div id="searchResults" 
+                         class="absolute top-full left-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 max-h-96 overflow-y-auto hidden"
+                         style="z-index: 1000;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 原有的内容容器 -->
+    <div class="max-w-[1400px] mx-auto p-6 flex gap-8">
+        <!-- 左侧签证类型选择栏 -->
+        <div class="w-80 flex-shrink-0">
+            <div class="bg-white rounded-lg shadow-sm p-4 sticky top-4 border border-[var(--border-blue)]">
+                <!-- 移动数据分析到最上方 -->
+                <div class="mb-6">
+                    <h3 class="text-base font-medium text-[var(--primary-blue)] mb-3">数据分析</h3>
+                    <div class="space-y-2">
+                        <button 
+                            class="visa-type-btn w-full text-left px-4 py-3 rounded-lg flex items-center"
+                            onclick="showStatistics()"
+                        >
+                            <i class="fas fa-chart-line text-[var(--primary-blue)] mr-3"></i>
+                            <div>
+                                <div class="font-medium">移民趋势统计</div>
+                                <div class="text-sm text-[var(--text-blue)]">最新数据分析</div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 签证类型选择 -->
+                <h2 class="text-lg font-semibold mb-4">签证类型</h2>
+                <div class="space-y-2">
+                    <!-- 技术移民类 -->
+                    <div class="mb-4">
+                        <h3 class="text-base font-medium text-[var(--primary-blue)] mb-2">技术移民类</h3>
+                        <div class="space-y-2">
+                            <button 
+                                class="visa-type-btn w-full text-left transition-all"
+                                data-visa-type="189"
+                                onclick="switchVisaType('189')"
+                                onmouseover="showVisaDetails('189')"
+                                onmouseout="resetVisaDetails()"
+                            >
+                                <div class="text-lg font-medium">189签证</div>
+                                <div class="text-base text-gray-600">独立技术移民</div>
+                            </button>
+                            
+                            <button 
+                                class="visa-type-btn w-full text-left px-4 py-3 rounded-lg transition-all hover:bg-[var(--primary-light)]"
+                                data-visa-type="190"
+                                onclick="switchVisaType('190')"
+                            >
+                                <div class="font-medium">190签证</div>
+                                <div class="text-sm text-[var(--text-blue)]">州担保技术移民</div>
+                            </button>
+                            
+                            <button 
+                                class="visa-type-btn w-full text-left px-4 py-3 rounded-lg transition-all hover:bg-[var(--primary-light)]"
+                                data-visa-type="491"
+                                onclick="switchVisaType('491')"
+                            >
+                                <div class="font-medium">491签证</div>
+                                <div class="text-sm text-[var(--text-blue)]">偏远地区技术移民</div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 雇主担保类 -->
+                    <div class="mb-4">
+                        <h3 class="text-base font-medium text-[var(--primary-blue)] mb-3">雇主担保类</h3>
+                        <div class="space-y-2">
+                            <button class="visa-type-btn w-full text-left px-4 py-3 rounded-lg" data-visa-type="482" onclick="switchVisaType('482')">
+                                <div class="font-medium">482签证</div>
+                                <div class="text-sm text-[var(--text-blue)]">临时技术工人签证</div>
+                            </button>
+                            <button class="visa-type-btn w-full text-left px-4 py-3 rounded-lg" data-visa-type="186" onclick="switchVisaType('186')">
+                                <div class="font-medium">186签证</div>
+                                <div class="text-sm text-[var(--text-blue)]">雇主提名永居签证</div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 商业投资类 -->
+                    <div class="mb-4">
+                        <h3 class="text-base font-medium text-[var(--primary-blue)] mb-3">商业投资类</h3>
+                        <div class="space-y-2">
+                            <button class="visa-type-btn w-full text-left px-4 py-3 rounded-lg" data-visa-type="188" onclick="switchVisaType('188')">
+                                <div class="font-medium">188签证</div>
+                                <div class="text-sm text-[var(--text-blue)]">商业创新和投资签证</div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 毕业生类 -->
+                    <div class="mb-4">
+                        <h3 class="text-base font-medium text-[var(--primary-blue)] mb-3">毕业生类</h3>
+                        <div class="space-y-2">
+                            <button class="visa-type-btn w-full text-left px-4 py-3 rounded-lg" data-visa-type="485" onclick="switchVisaType('485')">
+                                <div class="font-medium">485签证</div>
+                                <div class="text-sm text-[var(--text-blue)]">毕业生临时签证</div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--   要内容区域 -->
+        <div class="flex-1">
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+                <!-- 顶部横幅 -->
+                <div class="gradient-animate p-6 text-white">
+                    <div class="max-w-[1000px] mx-auto">
+                        <div class="flex items-center justify-between">
+                            <div class="text-sm opacity-75">
+                                最后更新: 2024年9月
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 将统计面板移到这里,紧接在蓝色横幅下方 -->
+                <div id="statisticsPanel" class="hidden">
+                    <div class="bg-white p-6 max-w-[1000px] mx-auto">
+                        <!-- 数据总览 -->
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+                            <div class="stat-card bg-white rounded-xl p-6 border border-[var(--border-blue)]">
+                                <div class="text-sm text-[var(--text-blue)]">2024年总签证数量</div>
+                                <div class="text-3xl font-bold text-[var(--primary-blue)] mt-3 number-animate">255,000</div>
+                                <div class="flex items-center mt-2">
+                                    <i class="fas fa-arrow-up text-green-500 mr-1"></i>
+                                    <span class="text-green-500">26.9%</span>
+                                    <span class="text-sm text-gray-500 ml-1">同比增长</span>
+                                </div>
+                            </div>
+                            <div class="stat-card bg-white rounded-xl p-6 border border-[var(--border-blue)]">
+                                <div class="text-sm text-[var(--text-blue)]">技术移民签证</div>
+                                <div class="text-3xl font-bold text-[var(--primary-blue)] mt-3 number-animate">109,000</div>
+                                <div class="flex items-center mt-2">
+                                    <i class="fas fa-arrow-up text-green-500 mr-1"></i>
+                                    <span class="text-green-500">28.2%</span>
+                                    <span class="text-sm text-gray-500 ml-1">同比增长</span>
+                                </div>
+                            </div>
+                            <div class="stat-card bg-white rounded-xl p-6 border border-[var(--border-blue)]">
+                                <div class="text-sm text-[var(--text-blue)]">州担保签证</div>
+                                <div class="text-3xl font-bold text-[var(--primary-blue)] mt-3 number-animate">65,000</div>
+                                <div class="flex items-center mt-2">
+                                    <i class="fas fa-arrow-up text-green-500 mr-1"></i>
+                                    <span class="text-green-500">44.4%</span>
+                                    <span class="text-sm text-gray-500 ml-1">同比增长</span>
+                                </div>
+                            </div>
+                            <div class="stat-card bg-white rounded-xl p-6 border border-[var(--border-blue)]">
+                                <div class="text-sm text-[var(--text-blue)]">雇主担保签证</div>
+                                <div class="text-3xl font-bold text-[var(--primary-blue)] mt-3 number-animate">42,000</div>
+                                <div class="flex items-center mt-2">
+                                    <i class="fas fa-arrow-up text-green-500 mr-1"></i>
+                                    <span class="text-green-500">20.0%</span>
+                                    <span class="text-sm text-gray-500 ml-1">同比增长</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 图表区域 -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="chart-container bg-white rounded-xl p-6 border border-[var(--border-blue)]">
+                                <div class="flex items-center justify-between mb-4">
+                                    <h3 class="text-lg font-medium text-[var(--dark-blue)]">签证类型分布</h3>
+                                    <div class="text-sm text-[var(--text-blue)]">
+                                        <i class="fas fa-info-circle"></i>
+                                    </div>
+                                </div>
+                                <div class="h-[300px]">
+                                    <canvas id="visaTypeChart"></canvas>
+                                </div>
+                            </div>
+
+                            <div class="chart-container bg-white rounded-xl p-6 border border-[var(--border-blue)]">
+                                <div class="flex items-center justify-between mb-4">
+                                    <h3 class="text-lg font-medium text-[var(--dark-blue)]">各州签证分布</h3>
+                                    <div class="text-sm text-[var(--text-blue)]">
+                                        <i class="fas fa-info-circle"></i>
+                                    </div>
+                                </div>
+                                <div class="h-[300px]">
+                                    <canvas id="stateChart"></canvas>
+                                </div>
+                            </div>
+
+                            <div class="chart-container bg-white rounded-xl p-6 border border-[var(--border-blue)]">
+                                <div class="flex items-center justify-between mb-4">
+                                    <h3 class="text-lg font-medium text-[var(--dark-blue)]">热门职业分布</h3>
+                                    <div class="text-sm text-[var(--text-blue)]">
+                                        <i class="fas fa-info-circle"></i>
+                                    </div>
+                                </div>
+                                <div class="h-[300px]">
+                                    <canvas id="occupationChart"></canvas>
+                                </div>
+                            </div>
+
+                            <div class="chart-container bg-white rounded-xl p-6 border border-[var(--border-blue)]">
+                                <div class="flex items-center justify-between mb-4">
+                                    <h3 class="text-lg font-medium text-[var(--dark-blue)]">签证增长趋势</h3>
+                                    <div class="text-sm text-[var(--text-blue)]">
+                                        <i class="fas fa-info-circle"></i>
+                                    </div>
+                                </div>
+                                <div class="h-[300px]">
+                                    <canvas id="trendChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 数据来源说明 -->
+                        <div class="mt-6 text-sm text-gray-500 text-center">
+                            数据来源：澳大利亚内政部官方统计
+                            <a href="https://www.homeaffairs.gov.au/research-and-statistics/statistics/visa-statistics" 
+                               target="_blank" 
+                               class="text-[var(--primary-blue)] hover:underline ml-2">
+                                查看详细数据
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 添加签证说明面板 -->
+                <div id="visaInfo" class="bg-white p-6 max-w-[1000px] mx-auto mt-4 mb-4 px-8 rounded-lg hidden">
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-info-circle text-[var(--primary-blue)] mt-1"></i>
+                        </div>
+                        <div class="ml-3 w-full">
+                            <h3 class="text-lg font-medium text-[var(--dark-blue)]">
+                                ${visaInfo.title}
+                            </h3>
+                            <div class="mt-2 text-sm text-[var(--text-blue)]">
+                                ${visaInfo.description}
+                            </div>
+                            <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <span class="text-[var(--primary-blue)] font-medium">申请条件：</span>
+                                    <ul class="list-disc list-inside text-[var(--text-blue)] mt-2 space-y-2">
+                                        ${visaInfo.requirements.map(req => `<li>${req}</li>`).join('')}
+                                    </ul>
+                                </div>
+                                <div class="space-y-4">
+                                    <div>
+                                        <span class="text-[var(--primary-blue)] font-medium">处理时间：</span>
+                                        <div class="text-[var(--text-blue)] mt-1">${visaInfo.processing}</div>
+                                    </div>
+                                    <div>
+                                        <span class="text-[var(--primary-blue)] font-medium">申请费用：</span>
+                                        <div class="text-[var(--text-blue)] mt-1">${visaInfo.fee}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <main class="p-8">
+                    <form class="space-y-8 max-w-[1000px] mx-auto" id="calculatorForm">
+                        <!-- 职业评估卡片 -->
+                        <div class="score-card bg-white p-6 rounded-xl border border-[var(--border-blue)] shadow-sm w-full">
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-briefcase text-[var(--primary-blue)] text-xl mr-3"></i>
+                                <h2 class="text-xl font-semibold">您的职业</h2>
+                            </div>
+
+                            <!-- 职业选择下拉框 -->
+                            <select 
+                                id="occupationSelect"
+                                class="w-full p-3 border border-[var(--border-blue)] rounded-lg focus:ring-2 focus:ring-[var(--primary-blue)] focus:border-[var(--primary-blue)]"
+                                onchange="handleOccupationSelect(this.value)"
+                            >
+                                <option value="">请选择职业</option>
+                                <option value="not-listed" class="font-bold text-red-600">我的职业未被包括在清单中</option>
+                                <option value="" disabled>──────────</option>
+                                
+                                <!-- IT/计算机类 -->
+                                <optgroup label="IT/计算机类 (MLTSSL)">
+                                    <option value="135112">ICT项目经理 (135112)</option>
+                                    <option value="261111">ICT业务分析师 (261111)</option>
+                                    <option value="261112">系统分析师 (261112)</option>
+                                    <option value="261211">多媒体专家 (261211)</option>
+                                    <option value="261212">网页开发员 (261212)</option>
+                                    <option value="261311">分析程序员 (261311)</option>
+                                    <option value="261312">开发程序员 (261312)</option>
+                                    <option value="261313">软件工程师 (261313)</option>
+                                    <option value="261314">软件测试员 (261314)</option>
+                                    <option value="261399">其他软件和应用程序员 (261399)</option>
+                                    <option value="262111">数据库管理员 (262111)</option>
+                                    <option value="262112">ICT安全专家 (262112)</option>
+                                    <option value="263111">计算机网络专业人员 (263111)</option>
+                                    <option value="263112">网络管理员 (263112)</option>
+                                    <option value="263113">网络分析师 (263113)</option>
+                                </optgroup>
+
+                                <!-- 工程类 -->
+                                <optgroup label="工程类 (MLTSSL)">
+                                    <option value="233111">化学工程师 (233111)</option>
+                                    <option value="233112">材料工程师 (233112)</option>
+                                    <option value="233211">土木工程师 (233211)</option>
+                                    <option value="233212">岩土工程师 (233212)</option>
+                                    <option value="233213">工测量师 (233213)</option>
+                                    <option value="233214">结构工程师 (233214)</option>
+                                    <option value="233215">运输工程师 (233215)</option>
+                                    <option value="233311">电气工程师 (233311)</option>
+                                    <option value="233411">电子工程师 (233411)</option>
+                                    <option value="233511">工业工程师 (233511)</option>
+                                    <option value="233512">机械工程师 (233512)</option>
+                                    <option value="233513">生产或工厂工程师 (233513)</option>
+                                    <option value="233911">航空工程师 (233911)</option>
+                                    <option value="233912">农业工程师 (233912)</option>
+                                    <option value="233913">生物医学工程师 (233913)</option>
+                                    <option value="233914">建筑工程技师 (233914)</option>
+                                    <option value="233915">环境工程师 (233915)</option>
+                                    <option value="233916">海军建筑师 (233916)</option>
+                                </optgroup>
+
+                                <!-- 医疗卫生类 -->
+                                <optgroup label="医疗卫生类 (MLTSSL)">
+                                    <option value="251211">医学影像诊断师 (251211)</option>
+                                    <option value="251212">医学放射治疗师 (251212)</option>
+                                    <option value="251213">核医学技师 (251213)</option>
+                                    <option value="251214">超声检查技师 (251214)</option>
+                                    <option value="252711">听力学家 (252711)</option>
+                                    <option value="252712">语言病理学家 (252712)</option>
+                                    <option value="253111">普通医生 (253111)</option>
+                                    <option value="253112">驻院医生 (253112)</option>
+                                    <option value="253411">精神科医生 (253411)</option>
+                                    <option value="253511">外科医生 (253511)</option>
+                                    <option value="254111">助产士 (254111)</option>
+                                    <option value="254411">注册护士 (254411)</option>
+                                    <option value="254412">精神科护士 (254412)</option>
+                                    <option value="254413">手术室护士 (254413)</option>
+                                    <option value="254414">儿科护士 (254414)</option>
+                                    <option value="254415">重症监护  士 (254415)</option>
+                                    <option value="254416">老年护理护士 (254416)</option>
+                                    <option value="254417">残障护理护士 (254417)</option>
+                                    <option value="254418">精神健康护士 (254418)</option>
+                                </optgroup>
+
+                                <!-- 会计金融类 -->
+                                <optgroup label="会计金融类 (MLTSSL)">
+                                    <option value="221111">会计师 (221111)</option>
+                                    <option value="221112">管理会计师 (221112)</option>
+                                    <option value="221113">税务会计师 (221113)</option>
+                                    <option value="221213">外部审计师 (221213)</option>
+                                    <option value="221214">内部审计师 (221214)</option>
+                                    <option value="222111">大宗商品交易员 (222111)</option>
+                                    <option value="222112">金融经纪人 (222112)</option>
+                                    <option value="222199">金融经纪人nec (222199)</option>
+                                    <option value="222311">金融投资顾问 (222311)</option>
+                                    <option value="222312">金融投资经理 (222312)</option>
+                                    <option value="223111">人力资源顾问 (223111)</option>
+                                </optgroup>
+
+                                <!-- 建筑设计类 -->
+                                <optgroup label="建筑设计类 (MLTSSL)">
+                                    <option value="232111">建筑师 (232111)</option>
+                                    <option value="232112">景观建筑师 (232112)</option>
+                                    <option value="232212">测量师 (232212)</option>
+                                    <option value="232213">制图师 (232213)</option>
+                                    <option value="232214">其他技术设计人员 (232214)</option>
+                                    <option value="232311">时装设计师 (232311)</option>
+                                    <option value="232312">工业设计师 (232312)</option>
+                                    <option value="232411">平面设计师 (232411)</option>
+                                    <option value="232412">插图画家 (232412)</option>
+                                    <option value="232413">多媒体设计师 (232413)</option>
+                                    <option value="232414">网页设计师 (232414)</option>
+                                </optgroup>
+
+                                <!-- 教育类 -->
+                                <optgroup label="教育类 (MLTSSL)">
+                                    <option value="241111">幼儿教师 (241111)</option>
+                                    <option value="241213">小学教师 (241213)</option>
+                                    <option value="241411">中学教师 (241411)</option>
+                                    <option value="241511">特殊教育教师 (241511)</option>
+                                    <option value="242111">大学讲师 (242111)</option>
+                                    <option value="242211">职业教育教师 (242211)</option>
+                                </optgroup>
+
+                                <!-- 农和环境科学类 -->
+                                <optgroup label="农业和环境科学类 (MLTSSL)">
+                                    <option value="234111">农业顾问 (234111)</option>
+                                    <option value="234112">农业科学家 (234112)</option>
+                                    <option value="234113">林业科学家 (234113)</option>
+                                    <option value="234211">化学家 (234211)</option>
+                                    <option value="234212">食品技师 (234212)</option>
+                                    <option value="234213">葡萄酒科学家 (234213)</option>
+                                    <option value="234311">保护官员 (234311)</option>
+                                    <option value="234312">环境顾问 (234312)</option>
+                                    <option value="234313">环境研究科学家 (234313)</option>
+                                    <option value="234399">环境科学家nec (234399)</option>
+                                    <option value="234411">地质学家 (234411)</option>
+                                    <option value="234412">地球物理学家 (234412)</option>
+                                    <option value="234413">水文地质学家 (234413)</option>
+                                    <option value="234511">命科学家 (234511)</option>
+                                    <option value="234513">生物化学家 (234513)</option>
+                                    <option value="234514">生物技术学家 (234514)</option>
+                                    <option value="234515">植物学家 (234515)</option>
+                                    <option value="234516">海洋生物学家 (234516)</option>
+                                    <option value="234517">微生物家 (234517)</option>
+                                    <option value="234518">动物学家 (234518)</option>
+                                    <option value="234911">自然科学家 (234911)</option>
+                                </optgroup>
+
+                                <!-- 其他专业类 -->
+                                <optgroup label="其他专业类 (MLTSSL)">
+                                    <option value="224111">精算师 (224111)</option>
+                                    <option value="224112">数学家 (224112)</option>
+                                    <option value="224113">统计学家 (224113)</option>
+                                    <option value="224211">商业分析师 (224211)</option>
+                                    <option value="224212">商业顾问 (224212)</option>
+                                    <option value="224213">税顾问 (224213)</option>
+                                    <option value="224214">企业管理顾问 (224214)</option>
+                                    <option value="224311">经济学 (224311)</option>
+                                    <option value="224511">土地经济学家 (224511)</option>
+                                    <option value="224512">评估师 (224512)</option>
+                                    <option value="225111">广  专员 (225111)</option>
+                                    <option value="225113">市场营销专员 (225113)</option>
+                                    <option value="225211">ICT客户经理 (225211)</option>
+                                    <option value="225212">ICT业发展经理 (225212)</option>
+                                    <option value="225213">ICT销售 (225213)</option>
+                                    <option value="234711">兽医 (234711)</option>
+                                    <option value="234911">自然科学家 (234911)</option>
+                                    <option value="234912">冶金学家 (234912)</option>
+                                    <option value="234913">气象学家 (234913)</option>
+                                    <option value="234914">物理学家 (234914)</option>
+                                    <option value="234999">自然和物理科学专业人员nec (234999)</option>
+                                </optgroup>
+                            </select>
+
+                            <!-- 添加提示文字 -->
+                            <div class="mt-2 text-sm text-gray-500 flex items-center">
+                                <i class="fas fa-info-circle mr-2"></i>
+                                您可在页面上方搜索栏中输入职业代码或者名称
+                            </div>
+
+                            <!-- 职业详细信息显示区域 -->
+                            <div id="occupationDetails" class="mt-4 space-y-4 hidden">
+                                <div class="bg-white rounded-lg p-4 border border-[var(--border-blue)]">
+                                    <h4 class="font-medium text-[var(--dark-blue)]">职业详情</h4>
+                                    <p id="occupationCode" class="text-sm text-[var(--text-blue)] mt-1"></p>
+                                    <p id="occupationList" class="text-sm text-[var(--primary-blue)] mt-1"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 其他评分选项（初始隐藏） -->
+                        <div id="scoreCards" class="hidden mt-8 space-y-8">
+                            <!-- 进度条 -->
+                            <div class="mb-8">
+                                <div class="relative h-3 bg-gray-100 rounded-full overflow-hidden shadow-inner">
+                                    <div id="progressBar" 
+                                        class="absolute top-0 left-0 h-full w-0 rounded-full transition-all duration-700 ease-out transform"
+                                        style="background: linear-gradient(90deg, var(--primary-blue) 0%, var(--secondary-blue) 100%); box-shadow: 0 0 10px rgba(0, 77, 142, 0.3);">
+                                    </div>
+                                    <div class="absolute top-0 left-0 w-full h-full opacity-20 animate-shimmer" 
+                                        style="background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+                                        background-size: 200% 100%;"></div>
+                                </div>
+                                <!-- 在进度条下方添加获邀提示信息 -->
+                                <div class="mt-3 flex justify-between items-center">
+                                    <div class="text-sm text-gray-500">
+                                        <div class="text-xs mt-1 text-gray-400"><span id="lastInviteDate"></span></div>
+                                    </div>
+                                    <div class="text-lg font-medium text-[var(--primary-blue)]">
+                                        总分：<span id="totalScore" class="transition-all duration-700">0</span>
+                                        <span class="text-gray-400">/105</span>
+                                    </div>
+                                </div>
+                                <!-- 添加获邀提示信息 -->
+                                <div id="inviteHint" class="mt-4 hidden">
+                                    <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+                                        <p class="text-green-700 font-medium flex items-center">
+                                            <i class="fas fa-check-circle mr-2"></i>
+                                            您的分数超过该专业的最低获邀分数，您有很大概率会获得邀请。
+                                        </p>
+                                        <p class="text-sm text-green-600 mt-2">
+                                            建议您：
+                                            <ul class="list-disc list-inside mt-1 space-y-1">
+                                                <li>准备相关材料，包括学历认证、职业评估等</li>
+                                                <li>确保雅思成绩在有效期内</li>
+                                                <li>关注每月的邀请轮次信息</li>
+                                            </ul>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 评分卡网格 -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <!-- 年龄评分 -->
+                                <div class="bg-white p-6 rounded-xl border border-[var(--border-blue)] shadow-sm">
+                                    <h3 class="text-lg font-medium mb-4 flex items-center">
+                                        <i class="fas fa-user-clock text-[var(--primary-blue)] mr-3"></i>
+                                        年龄评分
+                                    </h3>
+                                    <select class="w-full p-3 border rounded-lg" name="age" onchange="calculateTotal()">
+                                        <option value="0">请选择年龄段</option>
+                                        <option value="25">18-24岁</option>
+                                        <option value="30">25-32岁</option>
+                                        <option value="25">33-39岁</option>
+                                        <option value="15">40-44岁</option>
+                                        <option value="0">45岁及以上</option>
+                                    </select>
+                                </div>
+
+                                <!-- 工作经验评分 -->
+                                <div class="bg-white p-6 rounded-xl border border-[var(--border-blue)] shadow-sm">
+                                    <h3 class="text-lg font-medium mb-4 flex items-center">
+                                        <i class="fas fa-briefcase text-[var(--primary-blue)] mr-3"></i>
+                                        工作经验评分
+                                    </h3>
+                                    <select class="w-full p-3 border rounded-lg" name="experience" onchange="calculateTotal()">
+                                        <option value="0">请选择工作年限</option>
+                                        <option value="5">1-3年</option>
+                                        <option value="10">3-5年</option>
+                                        <option value="15">5-8年</option>
+                                        <option value="20">8年以上</option>
+                                    </select>
+                                    <div class="mt-2 text-xs text-gray-500">分数：1-3年(5分)、3-5年(10分)、5-8年(15分)、8年以上(20分)</div>
+                                </div>
+
+                                <!-- 学历评分 -->
+                                <div class="bg-white p-6 rounded-xl border border-[var(--border-blue)] shadow-sm">
+                                    <h3 class="text-lg font-medium mb-4 flex items-center">
+                                        <i class="fas fa-graduation-cap text-[var(--primary-blue)] mr-3"></i>
+                                        学历评分
+                                    </h3>
+                                    <select class="w-full p-3 border rounded-lg" name="education" onchange="calculateTotal()">
+                                        <option value="0">请选择最高学历</option>
+                                        <option value="20">博士学位 (20分)</option>
+                                        <option value="15">硕士/本科学位 (15分)</option>
+                                        <option value="10">大专文凭 (10分)</option>
+                                        <option value="0">其他 (0分)</option>
+                                    </select>
+                                </div>
+
+                                <!-- 澳洲学习经验 -->
+                                <div class="bg-white p-6 rounded-xl border border-[var(--border-blue)] shadow-sm">
+                                    <h3 class="text-lg font-medium mb-4 flex items-center">
+                                        <i class="fas fa-book-reader text-[var(--primary-blue)] mr-3"></i>
+                                        澳洲学习经验
+                                    </h3>
+                                    <select class="w-full p-3 border rounded-lg" name="ausStudy" onchange="calculateTotal()">
+                                        <option value="0">请选择学习经验</option>
+                                        <option value="5">在澳洲学习至少2年 (5分)</option>
+                                        <option value="5">在偏远地区学习至少2年 (5分)</option>
+                                        <option value="0">无澳洲学习经验 (0分)</option>
+                                    </select>
+                                </div>
+
+                                <!-- 澳   工作经验 -->
+                                <div class="bg-white p-6 rounded-xl border border-[var(--border-blue)] shadow-sm">
+                                    <h3 class="text-lg font-medium mb-4 flex items-center">
+                                        <i class="fas fa-building text-[var(--primary-blue)] mr-3"></i>
+                                        澳洲工作经验
+                                    </h3>
+                                    <select class="w-full p-3 border rounded-lg" name="ausWork" onchange="calculateTotal()">
+                                        <option value="0">请选择工作年限</option>
+                                        <option value="5">1-3年 (5分)</option>
+                                        <option value="10">3-5年 (10分)</option>
+                                        <option value="15">5-8年 (15分)</option>
+                                        <option value="20">8年以上 (20分)</option>
+                                    </select>
+                                </div>
+
+                                <!-- 专业资格认证 -->
+                                <div class="bg-white p-6 rounded-xl border border-[var(--border-blue)] shadow-sm">
+                                    <h3 class="text-lg font-medium mb-4 flex items-center">
+                                        <i class="fas fa-certificate text-[var(--primary-blue)] mr-3"></i>
+                                        专业资格认证
+                                    </h3>
+                                    <select class="w-full p-3 border rounded-lg" name="professional" onchange="calculateTotal()">
+                                        <option value="0">请选择认证情况</option>
+                                        <option value="10">获得相关专业认证 (10分)</option>
+                                        <option value="0">无专业认证 (0分)</option>
+                                    </select>
+                                </div>
+
+                                <!-- 社区语言 -->
+                                <div class="bg-white p-6 rounded-xl border border-[var(--border-blue)] shadow-sm">
+                                    <h3 class="text-lg font-medium mb-4 flex items-center">
+                                        <i class="fas fa-comments text-[var(--primary-blue)] mr-3"></i>
+                                        社区语言
+                                    </h3>
+                                    <select class="w-full p-3 border rounded-lg" name="naati" onchange="calculateTotal()">
+                                        <option value="0">请选择语言认证</option>
+                                        <option value="5">NAATI认证 (5分)</option>
+                                        <option value="0">无认证 (0分)</option>
+                                    </select>
+                                </div>
+
+                                <!-- 配偶技能 -->
+                                <div class="bg-white p-6 rounded-xl border border-[var(--border-blue)] shadow-sm">
+                                    <h3 class="text-lg font-medium mb-4 flex items-center">
+                                        <i class="fas fa-user-friends text-[var(--primary-blue)] mr-3"></i>
+                                        配偶技能
+                                    </h3>
+                                    <select class="w-full p-3 border rounded-lg" name="partner" onchange="calculateTotal()">
+                                        <option value="0">请选择配偶情况</option>
+                                        <option value="10">配偶满足以下所有条件 (10分)：</option>
+                                        <option value="10">- 年龄小于45岁</option>
+                                        <option value="10">- 雅思4个6以上</option>
+                                        <option value="10">- 职业在技术移民清单上</option>
+                                        <option value="10">- 通过</option>
+                                        <option value="5">配偶具有胜任英语水平 (5分)</option>
+                                        <option value="0">单身或配偶为澳洲公民 (0分)</option>
+                                        <option value="0">不适用 (0分)</option>
+                                    </select>
+                                </div>
+
+                                <!-- 英语水平评分 -->
+                                <div class="bg-white p-6 rounded-xl border border-[var(--border-blue)] shadow-sm">
+                                    <h3 class="text-lg font-medium mb-4 flex items-center">
+                                        <i class="fas fa-language text-[var(--primary-blue)] mr-3"></i>
+                                        英语水平评分
+                                    </h3>
+                                    <select class="w-full p-3 border rounded-lg transition-all duration-300 hover:border-[var(--primary-blue)]" 
+                                            name="english" 
+                                            onchange="calculateTotal()">
+                                        <option value="0">请选择英语水平</option>
+                                        <optgroup label="优秀">
+                                            <option value="20">雅思 - 8(8,8,8,8)</option>
+                                            <option value="20">PTE - 79(79)</option>
+                                            <option value="20">托福 - 总分118</option>
+                                            <option value="20">剑桥C2 - 200分</option>
+                                        </optgroup>
+                                        <optgroup label="熟练">
+                                            <option value="10">雅    - 7(7,7,7,7)</option>
+                                            <option value="10">PTE - 65(65)</option>
+                                            <option value="10">托福 - 总分105</option>
+                                            <option value="10">剑桥C1 - 185分</option>
+                                        </optgroup>
+                                        <optgroup label="胜任">
+                                            <option value="0">雅思 - 6(6,6,6,6)</option>
+                                            <option value="0">PTE - 50(50)</option>
+                                            <option value="0">托福 - 总分85</option>
+                                            <option value="0">  桥B2 - 170分</option>
+                                        </optgroup>
+                                    </select>
+                                    <div class="mt-3 text-xs text-gray-500">
+                                        <p>分数对照表：</p>
+                                        <table class="w-full mt-1 border-collapse">
+                                            <tr class="border-b border-gray-200">
+                                                <td class="py-1">IELTS</td>
+                                                <td class="py-1">四个8.0 (8)</td>
+                                                <td class="py-1">四个7.0 (7)</td>
+                                                <td class="py-1">四个6.0 (6)</td>
+                                            </tr>
+                                            <tr class="border-b border-gray-200">
+                                                <td class="py-1">PTE</td>
+                                                <td class="py-1">79(79)</td>
+                                                <td class="py-1">65(65)</td>
+                                                <td class="py-1">50(50)</td>
+                                            </tr>
+                                            <tr class="border-b border-gray-200">
+                                                <td class="py-1">TOEFL iBT</td>
+                                                <td class="py-1">118</td>
+                                                <td class="py-1">105</td>
+                                                <td class="py-1">85</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="py-1">Cambridge</td>
+                                                <td class="py-1">C2(200)</td>
+                                                <td class="py-1">C1(185)</td>
+                                                <td class="py-1">B2(170)</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <!-- 偏远地区学习 -->
+                                <div class="bg-white p-6 rounded-xl border border-[var(--border-blue)] shadow-sm">
+                                    <h3 class="text-lg font-medium mb-4 flex items-center">
+                                        <i class="fas fa-map-marked-alt text-[var(--primary-blue)] mr-3"></i>
+                                        偏远地区学习
+                                    </h3>
+                                    <select class="w-full p-3 border rounded-lg" name="regional" onchange="calculateTotal()">
+                                        <option value="0">请选择学习情况</option>
+                                        <option value="5">在偏远地区学习至少2年 (5分)</option>
+                                        <option value="0">不适用 (0分)</option>
+                                    </select>
+                                </div>
+
+                                <!-- 州担保加分（仅在190签证时显示） -->
+                                <div id="stateNominationCard" class="bg-white p-6 rounded-xl border border-[var(--border-blue)] shadow-sm hidden">
+                                    <h3 class="text-lg font-medium mb-4 flex items-center">
+                                        <i class="fas fa-award text-[var(--primary-blue)] mr-3"></i>
+                                        州担保加分
+                                    </h3>
+                                    <select class="w-full p-3 border rounded-lg" name="stateNomination" onchange="calculateTotal()">
+                                        <option value="0">请选择是否获得州担保</option>
+                                        <option value="5">已获得州保提名 (5分)</option>
+                                        <option value="0">未获得州担保 (0分)</option>
+                                    </select>
+                                    <div class="mt-2 text-xs text-gray-500">
+                                        <p class="font-medium mb-1">如何获得州担保？</p>
+                                        <ul class="list-disc list-inside space-y-1">
+                                            <li>确认您的职业在目标州的担保职业清单上</li>
+                                            <li>满足州政府设定的最低评分要求（通常65-70分以上）</li>
+                                            <li>满足州政府的其他要求（如工作经验、英语水平等）</li>
+                                            <li>通过州政府官网提交EOI（意向表达）</li>
+                                            <li>等待州政府审核并发出提名邀请</li>
+                                        </ul>
+                                        <p class="mt-2">各州担保要求和申请链接：</p>
+                                        <div class="mt-1 space-y-1">
+                                            <a href="https://www.nsw.gov.au/visas-and-migration" target="_blank" class="text-[var(--primary-blue)] hover:underline block">新南威尔士州</a>
+                                            <a href="https://liveinmelbourne.vic.gov.au/migrate/skilled-migration-visas" target="_blank" class="text-[var(--primary-blue)] hover:underline block">维多利亚州</a>
+                                            <a href="https://migration.qld.gov.au" target="_blank" class="text-[var(--primary-blue)] hover:underline block">昆士兰州</a>
+                                            <a href="https://www.migration.sa.gov.au" target="_blank" class="text-[var(--primary-blue)] hover:underline block">南澳州</a>
+                                            <a href="https://www.migration.wa.gov.au" target="_blank" class="text-[var(--primary-blue)] hover:underline block">西澳州</a>
+                                            <a href="https://www.migration.tas.gov.au" target="_blank" class="text-[var(--primary-blue)] hover:underline block">塔斯马尼亚州</a>
+                                        </div>
+                                        <p class="mt-2 text-[var(--text-blue)]">注意：州担保申请需要满足相应州的具体要求，建议访问各州官网了解详细信息。</p>
+                                    </div>
+                                </div>
+
+                                <!-- 偏远地区担保加分（仅在491签证时显示） -->
+                                <div id="regionalNominationCard" class="bg-white p-6 rounded-xl border border-[var(--border-blue)] shadow-sm hidden">
+                                    <h3 class="text-lg font-medium mb-4 flex items-center">
+                                        <i class="fas fa-map-marked-alt text-[var(--primary-blue)] mr-3"></i>
+                                        偏远地区担保加分 (491签证专属)
+                                    </h3>
+                                    <select class="w-full p-3 border rounded-lg" name="regionalNomination" onchange="calculateTotal()">
+                                        <option value="0">请选择担保类型</option>
+                                        <option value="15">州政府担保 (15分)</option>
+                                        <option value="15">亲属担保 (15分)</option>
+                                        <option value="0">未获得担保 (0分)</option>
+                                    </select>
+                                    <div class="mt-2 text-xs text-gray-500">
+                                        注意事项：
+                                        <div class="mt-1">
+                                            • 491签证要求在偏远地区生活和工作至少3年
+                                            • 491签证是临时签证，需要满足条件后才能申请191永居签证
+                                            • 亲属担保需要澳洲公民或永居的亲属在偏远地区居住
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </main>
+
+                <!-- 将提示信息移到页面最下方，并与英语水平卡片左边对齐 -->
+                <div class="text-sm text-gray-500 pb-6 max-w-[1000px] mx-auto px-8">
+                    计算器仅参考，具体评分标准请以澳洲移民局官方要求为准。
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 添加必要的JS库 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- 添加职业搜索和数据显示的JavaScript -->
+    <script>
+    let occupationData = null;
+    let scoreChart = null;
+
+    // 职业搜索功能
+    async function searchOccupation(query) {
+        if (query.length < 2) {
+            document.getElementById('searchResults').classList.add('hidden');
+            return;
+        }
+
+        try {
+            const response = await fetch(`/api/occupations/search?q=${query}`);
+            const results = await response.json();
+            
+            const resultsDiv = document.getElementById('searchResults');
+            resultsDiv.innerHTML = '';
+            resultsDiv.classList.remove('hidden');
+
+            results.forEach(occ => {
+                const div = document.createElement('div');
+                div.className = 'p-3 hover:bg-[var(--primary-light)] cursor-pointer';
+                div.onclick = () => selectOccupation(occ);
+                div.innerHTML = `
+                    <div class="font-medium">${occ.title}</div>
+                    <div class="text-sm text-[var(--text-blue)]">${occ.anzscoCode}</div>
+                `;
+                resultsDiv.appendChild(div);
+            });
+        } catch (error) {
+            console.error('职业搜索失败:', error);
+        }
+    }
+
+    // 选择职业后显示详细   息
+    function selectOccupation(occupation) {
+        occupationData = occupation;
+        document.getElementById('searchResults').classList.add('hidden');
+        document.getElementById('selectedOccupation').classList.remove('hidden');
+        
+        // 更新职业信息显示
+        document.getElementById('occTitle').textContent = occupation.title;
+        document.getElementById('occCode').textContent = `ANZSCO: ${occupation.anzscoCode}`;
+        
+        // 设置状态签样式
+        const statusSpan = document.getElementById('occStatus');
+        statusSpan.textContent = occupation.status;
+        if (occupation.status === 'MLTSSL') {
+            statusSpan.className = 'px-2 py-1 text-xs rounded-full bg-[var(--light-blue)] text-[var(--primary-blue)]';
+        } else {
+            statusSpan.className = 'px-2 py-1 text-xs rounded-full bg-[var(--primary-light)] text-[var(--primary-blue)]';
+        }
+        
+        document.getElementById('occLastScore').textContent = `${occupation.lastInviteScore}分`;
+        document.getElementById('occLastDate').textContent = new Date(occupation.lastInviteDate).toLocaleDateString();
+        document.getElementById('occQuota').textContent = `${occupation.currentQuota}/${occupation.quota}`;
+        
+        // 更新趋势图
+        updateScoreChart(occupation.anzscoCode);
+    }
+
+    // 更新邀请分数趋势图
+    async function updateScoreChart(anzscoCode) {
+        try {
+            const response = await fetch(`/api/invitations/history?code=${anzscoCode}`);
+            const history = await response.json();
+            
+            const ctx = document.getElementById('inviteScoreChart').getContext('2d');
+            
+            if (window.scoreChart) {
+                window.scoreChart.destroy();
+            }
+            
+            window.scoreChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: history.map(h => new Date(h.roundDate).toLocaleDateString()),
+                    datasets: [{
+                        label: '邀请分',
+                        data: history.map(h => h.inviteScore),
+                        borderColor: 'rgb(59, 130, 246)',
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            min: 60,
+                            ticks: {
+                                stepSize: 5
+                            }
+                        }
+            });
+        } catch (error) {
+            console.error('获取邀请历史失败:', error);
+        }
+    }
+
+    // 点击页面其他地方时隐搜索结果
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('#occupationSearch')) {
+            document.getElementById('searchResults').classList.add('hidden');
+        }
+    });
+    </script>
+
+    <script>
+        function updateScore() {
+            const form = document.getElementById('calculatorForm');
+            let total = 0;
+            
+            // 获取所有选择框值算总分
+            const selects = form.querySelectorAll('select[name]');
+            selects.forEach(select => {
+                total += parseInt(select.value) || 0;
+            });
+            
+            // 更新总分显示
+            document.getElementById('currentScore').textContent = total;
+            
+            // 更新进度条
+            const progressBar = document.getElementById('progressBar');
+            const percentage = (total / 105) * 100;
+            progressBar.style.width = `${percentage}%`;
+        }
+    </script>
+
+    <script>
+        // 定义签证类   数据
+        const visaTypes = {
+            '189': {
+                title: '189签证 - 独立技术移民',
+                description: '这是一个永久居留签证，适用于已通过职业评估，且具备相关技能和资格的申请人。无需雇主或州政府担保。',
+                requirements: [
+                    '年龄不超过45岁',
+                    '职业在<a href="https://immi.homeaffairs.gov.au/visas/working-in-australia/skilled-occupation-list" target="_blank" class="font-bold text-[var(--primary-blue)] hover:text-[var(--primary-blue)] hover:underline">技术移民职业清单(MLTSSL)</a>上',
+                    '雅思各项达到6分',
+                    '技术评估通过',
+                    '评分达到65分以上'
+                ],
+                processing: '12-18个',
+                fee: '主申请人 $4,115 AUD',
+                passingScore: 65,
+                needScore: true,
+                officialLinks: [
+                    {
+                        text: '189签证官方页面',
+                        url: 'https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/skilled-independent-189/points-tested'
+                    },
+                    {
+                        text: 'MLTSSL职业清单详细要求',
+                        url: 'https://www.legislation.gov.au/Details/F2023C00397'
+                    },
+                    {
+                        text: '职业评估机构要求查询',
+                        url: 'https://www.homeaffairs.gov.au/skills-assessment'
+                    }
+                ]
+            },
+            '190': {
+                title: '190签证 - 州担保技术移民',
+                description: '需要州政府担保的永久居留签证',
+                requirements: [
+                    '年龄不过45岁',
+                    '职业各担保职业清单上',
+                    '雅思各项达到6分',
+                    '技能评估通过',
+                    '评分到65分以上',
+                    '获得州政府提名',
+                    '承诺在提名州生活工作至少2年'
+                ],
+                processing: '12-24个月',
+                fee: '主申请人 $4,115 AUD',
+                passingScore: 65,
+                needScore: true,
+                officialLinks: [
+                    {
+                        text: '新南威尔士州担保清单',
+                        url: 'https://www.nsw.gov.au/visas-and-migration/skilled-visas/nsw-skilled-occupation-lists'
+                    },
+                    {
+                        text: '维多利亚州担保清单',
+                        url: 'https://liveinmelbourne.vic.gov.au/migrate/visa-nomination-occupation-lists'
+                    },
+                    {
+                        text: '昆士兰州担保清单',
+                        url: 'https://migration.qld.gov.au/skilled-visa-options/485-graduate-visa/occupation-lists'
+                    },
+                    {
+                        text: '南澳州担保清单',
+                        url: 'https://www.migration.sa.gov.au/occupation-lists'
+                    },
+                    {
+                        text: '西澳州担保清单',
+                        url: 'https://www.migration.wa.gov.au/services/skilled-migration-western-australia/occupation-lists'
+                    },
+                    {
+                        text: '塔州担保清单',
+                        url: 'https://www.migration.tas.gov.au/skilled_migrants/skilled_nominated_visa'
+                    }
+                ]
+            },
+            '491': {
+                title: '491签证 - 偏远地区技术移民',
+                description: '偏远地区担保的临时居留签证',
+                requirements: [
+                    '年龄不超过45岁',
+                    '职业在<a href="https://www.legislation.gov.au/Details/F2023C00397" target="_blank" class="font-bold text-[var(--primary-blue)] hover:text-[var(--primary-blue)] hover:underline">远地职业清单(ROL)</a>上',
+                    '雅思各项达到6分',
+                    '技术评估通过',
+                    '评分达到65分以上',
+                    '获得州政府或亲属担保',
+                    '承诺在偏远地区生活工作至少3年'
+                ],
+                processing: '6-12个月',
+                fee: '主申请人 $4,115 AUD',
+                passingScore: 65,
+                needScore: true,
+                officialLinks: [
+                    {
+                        text: '491签证官方页面',
+                        url: 'https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/skilled-work-regional-provisional-491/application'
+                    },
+                    {
+                        text: '偏远地区定义查询',
+                        url: 'https://immi.homeaffairs.gov.au/visas/working-in-australia/regional-migration/eligible-regional-areas'
+                    }
+                ]
+            },
+            '482': {
+                title: '482签证 - 临时技术工人签证',
+                description: '这是一个临时工作签证，需要雇主担保。根据职业类别不同，签证有效期为2-4年。适用于解决澳大利亚技术工人短缺的问题。',
+                requirements: [
+                    '基本要求：',
+                    '年龄不超过45岁（特殊情况豁免）',
+                    '持有有效护照',
+                    '符合健康和品行要求',
+                    '技能要求：',
+                    '至少2年全职相关工作经验',
+                    '满足职业评估要求',
+                    '英语要求：',
+                    'IELTS平均分5分（每项不低于5分）或同等水平',
+                    '雇主要求：',
+                    '获得澳洲雇主担保',
+                    '雇主需完成劳动力场测试（LMT）<a href="https://immi.homeaffairs.gov.au/visas/employing-and-sponsoring-someone/sponsoring-workers/nominating-a-position/labour-market-testing#content-index-3" target="_blank" class="text-[var(--primary-blue)] hover:underline">认可平台清单</a>：',
+                    '• 在指定平台发布职位广告至少28天',
+                    '• 广告平台包括：<a href="https://jobsearch.gov.au/" target="_blank" class="text-[var(--primary-blue)] hover:underline">JobActive</a>、<a href="https://www.seek.com.au/" target="_blank" class="text-[var(--primary-blue)] hover:underline">SEEK</a>等',
+                    '• 证明无法从本地劳动力市场招聘到合适人选',
+                    '• 提供详细的招聘过程记录和评估报告',
+                    '薪资不低于市场工资水平'
+                ],
+                occupationStreams: [
+                    {
+                        title: '短期类',
+                        description: '最多2年，可续签一次',
+                        list: 'STSOL',
+                        listName: '短期技术职业清单',
+                        listUrl: 'https://immi.homeaffairs.gov.au/visas/working-in-australia/skill-occupation-list/short-term-skilled-occupation-list',
+                        fee: '$1,330 AUD',
+                        details: '适用于短期技能需求的职业'
+                    },
+                    {
+                        title: '中期类',
+                        description: '最多4年，可续签',
+                        list: 'MLTSSL',
+                        listName: '中长期技术职业清单',
+                        listUrl: 'https://immi.homeaffairs.gov.au/visas/working-in-australia/skill-occupation-list/medium-and-long-term-strategic-skills-list',
+                        fee: '$2,770 AUD',
+                        details: '适用于长期技能需求的职业'
+                    },
+                    {
+                        title: '劳工协议类',
+                        description: '根据协议规定期限',
+                        list: 'LAF',
+                        listName: '劳工协议框架',
+                        listUrl: 'https://immi.homeaffairs.gov.au/visas/employing-and-sponsoring-someone/sponsoring-workers/nominating-a-position/labour-agreements',
+                        fee: '根据协议而定',
+                        details: '适用于特定行业或企业的劳工协议'
+                    }
+                ],
+                processing: '标准处理时间：75%的申请在11-22个月内完成',
+                fee: '根据职业类别而定，见下方详细说明',
+                needScore: false,
+                officialLinks: [
+                    {
+                        text: '482签证官方页面',
+                        url: 'https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/temporary-skill-shortage-482'
+                    },
+                    {
+                        text: '482签证申请指南',
+                        url: 'https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/temporary-skill-shortage-482/medium-term-stream'
+                    },
+                    {
+                        text: '雇主担保要求',
+                        url: 'https://immi.homeaffairs.gov.au/visas/employing-and-sponsoring-someone/sponsoring-workers/becoming-a-sponsor/standard-business-sponsor'
+                    },
+                    {
+                        text: '场工资水平要求',
+                        url: 'https://immi.homeaffairs.gov.au/visas/employing-and-sponsoring-someone/sponsoring-workers/paying-sponsored-workers'
+                    },
+                    {
+                        text: '劳动力市场测试（LMT）详细指南',
+                        url: 'https://immi.homeaffairs.gov.au/visas/employing-and-sponsoring-someone/sponsoring-workers/nominating-a-position/labour-market-testing'
+                    },
+                    {
+                        text: '认可的广告平台清单',
+                        url: 'https://immi.homeaffairs.gov.au/visas/employing-and-sponsoring-someone/sponsoring-workers/nominating-a-position/labour-market-testing#content-index-3'
+                    }
+                ]
+            },
+            '186': {
+                title: '186签证 - 雇主提名永居证',
+                description: '这是一个永久居留签证，需要雇主提名。适用于已在澳洲工作并获得雇主支持的申请人。',
+                requirements: [
+                    '年龄不超过45岁',
+                    '职业在<a href="https://immi.homeaffairs.gov.au/visas/working-in-australia/skill-occupation-list" target="_blank" class="font-bold text-[var(--primary-blue)] hover:text-[var(--primary-blue)] hover:underline">中长期技术职业清单(MLTSSL)</a>上',
+                    '至少3年相关工作经验',
+                    '雅思各项不低于6分',
+                    '获得雇主提名'
+                ],
+                processing: '6-8个月',
+                fee: '主申请人 $4,115 AUD',
+                needScore: false,
+                officialLinks: [
+                    {
+                        text: '186签证官方页面',
+                        url: 'https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/employer-nomination-scheme-186'
+                    },
+                    {
+                        text: 'MLTSSL职业清单详细要求',
+                        url: 'https://immi.homeaffairs.gov.au/visas/working-in-australia/skill-occupation-list'
+                    },
+                    {
+                        text: '雇主提名要求查询',
+                        url: 'https://immi.homeaffairs.gov.au/visas/employing-and-sponsoring-someone/sponsoring-workers/nominating-a-position/labour-market-testing'
+                    }
+                ]
+            },
+            '188': {
+                title: '188签证 - 商业创新和投资签证',
+                description: '这是一个临时签证，适用于有意在澳大利亚开展商业活动或进行投资的申请人。签证有效期为5年。',
+                requirements: [
+                    '年龄不超过55岁（某些情况可放宽）',
+                    '申请途径（二选一）：',
+                    '<strong>1. 商业创新类：</strong>',
+                    '过去4年内2年营业额达到75万澳币',
+                    '营业额低于400万澳币的企业需持股至少51%',
+                    '营业额高于400万澳币的企业需持股至少30%',
+                    '个人和家庭净资产至少120万澳币',
+                    '<strong>2. 投资者类：</strong>',
+                    '过去5年内有管理合格投资的经验',
+                    '直接持有至少250万澳币的商业资产',
+                    '个人和家庭净资产至少250万澳币',
+                    '需投资250万澳币于澳洲政府债券'
+                ],
+                processing: '14-25个月',
+                fee: '主申请人 $6,240 AUD',
+                needScore: false,
+                officialLinks: [
+                    {
+                        text: '188签证官方页面',
+                        url: 'https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/business-innovation-and-investment-188'
+                    },
+                    {
+                        text: '商业创新和投资签证详细指南',
+                        url: 'https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/business-innovation-and-investment-188/business-innovation-stream'
+                    },
+                    {
+                        text: '投资要求详细说明',
+                        url: 'https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/business-innovation-and-investment-188/investor-stream'
+                    }
+                ]
+            },
+            '485': {
+                title: '485签证 - 毕业生临时签证',
+                description: '澳洲留学毕业后的临时工作签证',
+                requirements: [
+                    '年龄要求：',
+                    '必须未满<a href="https://immi.homeaffairs.gov.au/help-support/meeting-our-requirements/age" target="_blank" class="text-[var(--primary-blue)] hover:underline">50岁</a>',
+                    '学历要求：',
+                    '在过去6个月内完成至少2年的<a href="https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/temporary-graduate-485/australian-study-requirement" target="_blank" class="text-[var(--primary-blue)] hover:underline">澳洲学习要求</a>',
+                    '所学课程必须在<a href="https://cricos.education.gov.au/default.aspx" target="_blank" class="text-[var(--primary-blue)] hover:underline">CRICOS注册</a>',
+                    '英语要求：',
+                    '<a href="https://www.ielts.org/" target="_blank" class="text-[var(--primary-blue)] hover:underline">雅思</a>总分6.0（各项不低于6.0）或',
+                    '<a href="https://pearsonpte.com/" target="_blank" class="text-[var(--primary-blue)] hover:underline">PTE</a>总分50（各项不低于50）',
+                    '其他要求：',
+                    '符合<a href="https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/temporary-graduate-485/australian-study-requirement" target="_blank" class="text-[var(--primary-blue)] hover:underline">澳洲学习要求</a>',
+                    '持有<a href="https://immi.homeaffairs.gov.au/help-support/meeting-our-requirements/health/adequate-health-insurance" target="_blank" class="text-[var(--primary-blue)] hover:underline">符合要求的医疗保险</a>',
+                    '通过<a href="https://immi.homeaffairs.gov.au/help-support/meeting-our-requirements/character" target="_blank" class="text-[var(--primary-blue)] hover:underline">品行要求</a>'
+                ],
+                processing: '4-8个月',
+                fee: '主申请人 $1,730 AUD',
+                needScore: false,
+                officialLinks: [
+                    {
+                        text: '485签证官方页面',
+                        url: 'https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/temporary-graduate-485'
+                    },
+                    {
+                        text: '澳洲学习要求说明',
+                        url: 'https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/temporary-graduate-485/australian-study-requirement'
+                    },
+                    {
+                        text: '申请指南',
+                        url: 'https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/temporary-graduate-485/graduate-work'
+                    }
+                ]
+            }
+        };
+
+        // 修改签证切换函数
+        function switchVisaType(type) {
+            // 隐藏统计面板
+            document.getElementById('statisticsPanel').classList.add('hidden');
+            // 更新按钮状态
+            document.querySelectorAll('.visa-type-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if(btn.dataset.visaType === type) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            // 显示签证相关内容
+            const visaInfo = document.getElementById('visaInfo');
+            const calculatorForm = document.getElementById('calculatorForm');
+            
+            // 先隐藏内容
+            visaInfo.classList.add('hidden');
+            calculatorForm.classList.add('hidden');
+            
+            // 判断是否为技术移民签证
+            const isSkilledVisa = ['189', '190', '491'].includes(type);
+            
+            // 延迟显示新内容
+            setTimeout(() => {
+                showVisaDetails(type);
+                visaInfo.classList.remove('hidden');
+                
+                if (isSkilledVisa) {
+                    calculatorForm.classList.remove('hidden');
+                    document.querySelectorAll('select[name]').forEach(select => {
+                        select.value = '0';
+                    });
+                    calculateTotal();
+                }
+            }, 200);
+
+            // 处理加分项显示/隐藏
+            if (isSkilledVisa) {
+                const stateNominationCard = document.getElementById('stateNominationCard');
+                const regionalNominationCard = document.getElementById('regionalNominationCard');
+
+                stateNominationCard.classList.add('hidden');
+                regionalNominationCard.classList.add('hidden');
+
+                if (type === '190') {
+                    stateNominationCard.classList.remove('hidden');
+                } else if (type === '491') {
+                    regionalNominationCard.classList.remove('hidden');
+                }
+
+                document.querySelector('select[name="stateNomination"]').value = '0';
+                document.querySelector('select[name="regionalNomination"]').value = '0';
+                calculateTotal();
+            }
+        }
+
+        // 添加重置评分函数
+        function resetScore() {
+            const form = document.getElementById('calculatorForm');
+            if (form) {
+                form.reset();
+                updateScore(); // 更新显示为0分
+            }
+        }
+
+        // 页面加载时初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            switchVisaType('189'); // 默认显示189签证
+        });
+
+        // 修改链接创建函数
+        function createLinkElement(text, url, isOccupationList = false) {
+            return `<a href="${url}" 
+                      target="_blank" 
+                      class="${isOccupationList 
+                        ? 'font-bold text-[var(--primary-blue)] hover:text-[var(--primary-blue)] hover:underline' 
+                        : 'text-[var(--text-blue)] hover:text-[var(--primary-blue)] hover:underline flex items-center'}">
+                      <i class="fas fa-external-link-alt text-xs mr-2"></i>
+                      ${text}
+                   </a>`;
+        }
+    </script>
+
+    <script>
+    const occupationData = {
+        '261311': {
+            title: '分析程序员',
+            list: 'MLTSSL',
+            category: 'IT/计算机类',
+            assessing_authority: 'ACS',
+            requirements: {
+                education: '相关专业学士学位或以上',
+                experience: '至少2年相关工作经验',
+                english: '雅思各项不低于6分'
+            }
+        },
+        '261312': {
+            title: '开发程序员',
+            list: 'MLTSSL',
+            category: 'IT/计算机类',
+            assessing_authority: 'ACS',
+            requirements: {
+                education: '相关专业学士学位或以上',
+                experience: '至少2年相关工作经验',
+                english: '雅思各项不低于6分'
+            }
+        },
+        '261313': {
+            title: '软件工程师',
+            list: 'MLTSSL',
+            category: 'IT/计算机类',
+            assessing_authority: 'ACS',
+            requirements: {
+                education: '相关专业学士学位或以上',
+                experience: '至少2年相关工作经验',
+                english: '雅思各项不低于6分'
+            }
+        },
+        '261314': {
+            title: '软件测试工程师',
+            list: 'MLTSSL',
+            category: 'IT/计算机类',
+            assessing_authority: 'ACS',
+            requirements: {
+                education: '相关专业学士学位或以上',
+                experience: '至少2年相关工作经验',
+                english: '雅思各项不低于6分'
+            }
+        },
+        '261399': {
+            title: '软件和应用程序员NEC',
+            list: 'MLTSSL',
+            category: 'IT/计算机类',
+            assessing_authority: 'ACS',
+            requirements: {
+                education: '相关专业学士学位或以上',
+                experience: '至少2年相关工作经验',
+                english: '雅思各项不低于6分'
+            }
+        },
+        '261112': {
+            title: '系分析师',
+            list: 'MLTSSL',
+            category: 'IT/计算机类',
+            assessing_authority: 'ACS',
+            requirements: {
+                education: '相关专业学士学位或以上',
+                experience: '至少2年相关工作经验',
+                english: '雅思各项不低于6分'
+            }
+        },
+
+        // 工程类
+        '233211': {
+            title: '土木工程师',
+            list: 'MLTSSL',
+            category: '工程类',
+            assessing_authority: 'Engineers Australia',
+            requirements: {
+                education: '工程学士学位或以上',
+                experience: '至少3年相关工作经验',
+                english: '雅思各项不低于6分',
+                other: '需要提供CDR报告'
+            }
+        },
+        '233212': {
+            title: '岩土工程师',
+            list: 'MLTSSL',
+            category: '工程类',
+            assessing_authority: 'Engineers Australia',
+            requirements: {
+                education: '工程学士学位或以上',
+                experience: '至少3年相关工作经验',
+                english: '雅思各项不低于6分',
+                other: '需要提供CDR报告'
+            }
+        },
+        '233214': {
+            title: '结构工程师',
+            list: 'MLTSSL',
+            category: '工程类',
+            assessing_authority: 'Engineers Australia',
+            requirements: {
+                education: '工程学士学位或以上',
+                experience: '至少3年相关工作经验',
+                english: '雅思各项不低于6分',
+                other: '需要提供CDR报告'
+            }
+        },
+        '233215': {
+            title: '运输工程师',
+            list: 'MLTSSL',
+            category: '工程类',
+            assessing_authority: 'Engineers Australia',
+            requirements: {
+                education: '工程学士学位或以上',
+                experience: '少3年相关工作经验',
+                english: '雅思各项不低于6分',
+                other: '需要提供CDR报告'
+            }
+        },
+        '233311': {
+            title: '电气工程师',
+            list: 'MLTSSL',
+            category: '工程类',
+            assessing_authority: 'Engineers Australia',
+            requirements: {
+                education: '工程学士学位或以上',
+                experience: '至少3年相关工作经验',
+                english: '雅思各项不低于6分',
+                other: '需要提供CDR报告'
+            }
+        },
+        '233411': {
+            title: '电子工程师',
+            list: 'MLTSSL',
+            category: '工程类',
+            assessing_authority: 'Engineers Australia',
+            requirements: {
+                education: '工程学学位或以上',
+                experience: '至少3年相关工作经验',
+                english: '雅思各项不低于6分',
+                other: '需要提供CDR报告'
+            }
+        },
+        '233511': {
+            title: '工业工程师',
+            list: 'MLTSSL',
+            category: '工程类',
+            assessing_authority: 'Engineers Australia',
+            requirements: {
+                education: '工程学士位或以上',
+                experience: '至少3年相关工作经验',
+                english: '雅思各项不低   6分',
+                other: '需要提供CDR报告'
+            }
+        },
+
+        // 会计金融类
+        '221111': {
+            title: '会计师',
+            list: 'MLTSSL',
+            category: '会计金融类',
+            assessing_authority: 'CPA/CA/IPA',
+            requirements: {
+                education: '会计相关学士学位或以上',
+                experience: '至少1年相关工作经验',
+                english: '雅思各项不低于7分',
+                other: '需要完成专业年评估'
+            }
+        },
+        '221112': {
+            title: '管理会计',
+            list: 'MLTSSL',
+            category: '会计金融类',
+            assessing_authority: 'CPA/CA/IPA',
+            requirements: {
+                education: '会计相关学士学位或以上',
+                experience: '至少1年相关工作经验',
+                english: '雅思各项不低于7分'
+            }
+        },
+        '221213': {
+            title: '外部审计师',
+            list: 'MLTSSL',
+            category: '会计金融类',
+            assessing_authority: 'CPA/CA/IPA',
+            requirements: {
+                education: '会计相关学士学位或以上',
+                experience: '至少1年相关工作经验',
+                english: '雅思各项不低于7分'
+            }
+        },
+
+        // 医疗卫生类
+        '253111': {
+            title: '普通科医生',
+            list: 'MLTSSL',
+            category: '医疗卫生类',
+            assessing_authority: 'Medical Board of Australia',
+            requirements: {
+                education: '医学学士学位或以上',
+                experience: '需完成实习和住院医师培训',
+                english: 'OET B级或以上',
+                other: '需要通过AMC考试'
+            }
+        },
+        '253112': {
+            title: '驻院医生',
+            list: 'MLTSSL',
+            category: '医疗卫生类',
+            assessing_authority: 'Medical Board of Australia',
+            requirements: {
+                education: '医学学士学位或以上',
+                experience: '需完成实习',
+                english: 'OET B级或以上',
+                other: '需要通过AMC考试'
+            }
+        },
+        '253411': {
+            title: '精神科医生',
+            list: 'MLTSSL',
+            category: '医疗卫生类',
+            assessing_authority: 'Medical Board of Australia',
+            requirements: {
+                education: '医学学士学位或以上',
+                experience: '需完成专科培训',
+                english: 'OET B级或以上',
+                other: '需要通过AMC考试和专科认证'
+            }
+        },
+
+        // 建筑设计类
+        '232111': {
+            title: '建筑师',
+            list: 'MLTSSL',
+            category: '建筑设计类',
+            assessing_authority: 'AACA',
+            requirements: {
+                education: '建筑学士学位或以上',
+                experience: '至少2年相关工作经验',
+                english: '雅思各项不低于7分',
+                other: '需要完成实践经验评估'
+            }
+        },
+        '232112': {
+            title: '景观设计师',
+            list: 'MLTSSL',
+            category: '建筑设计类',
+            assessing_authority: 'VETASSESS',
+            requirements: {
+                education: '景观设计相关学士学位',
+                experience: '至少3年相关工作经',
+                english: '雅思各项低于6分'
+            }
+        },
+
+        // 教育类
+        '241411': {
+            title: '中学教师',
+            list: 'MLTSSL',
+            category: '教育类',
+            assessing_authority: 'AITSL',
+            requirements: {
+                education: '教育学士学位或以上',
+                experience: '至少1年教学经验',
+                english: '雅思各项不低于7',
+                other: '需要获得教师注册资格'
+            }
+        },
+        '241111': {
+            title: '幼儿教师',
+            list: 'MLTSSL',
+            category: '教育类',
+            assessing_authority: 'AITSL',
+            requirements: {
+                education: '幼儿教育学士学位',
+                experience: '至少1年教学经验',
+                english: '雅思各项不低于7分',
+                other: '需要获得教师注册资格'
+            }
+        },
+
+        // 更多工程类
+        '233512': {
+            title: '机械工程师',
+            list: 'MLTSSL',
+            category: '工程类',
+            assessing_authority: 'Engineers Australia',
+            requirements: {
+                education: '机械工程学士学位',
+                experience: '至少3年相关工作经验',
+                english: '雅思各项不低于6分',
+                other: '需要提供CDR报告'
+            }
+        },
+        '233513': {
+            title: '生产或工厂工程师',
+            list: 'MLTSSL',
+            category: '工程类',
+            assessing_authority: 'Engineers Australia',
+            requirements: {
+                education: '工程学士学位',
+                experience: '至少3年相关工作经验',
+                english: '雅思各项不低于6分',
+                other: '需要提供CDR报告'
+            }
+        },
+
+        // 更多医疗卫生类
+        '252711': {
+            title: '听力学家',
+            list: 'MLTSSL',
+            category: '医疗卫生类',
+            assessing_authority: 'VETASSESS',
+            requirements: {
+                education: '听力学相关学士学位',
+                experience: '至少2年相关工作经验',
+                english: '雅思各项不低于7分'
+            }
+        },
+        '251211': {
+            title: '医学影像诊断师',
+            list: 'MLTSSL',
+            category: '医疗卫生类',
+            assessing_authority: 'ASMIRT',
+            requirements: {
+                education: '放射学相关学士学位',
+                experience: '需完成临床实习',
+                english: '雅思各项不低于7分',
+                other: '需要获得ASMIRT认证'            }
+        },
+
+        // 更多 IT/计算机类
+        '263111': {
+            title: '计算机网络工程师',
+            list: 'MLTSSL',
+            category: 'IT/计算机类',
+            assessing_authority: 'ACS',
+            requirements: {
+                education: '相关专业学士学或以上',
+                experience: '至少2年相关作经验',
+                english: '雅思各项不低于6分'
+            }
+        },
+        '262112': {
+            title: 'ICT安全专家',
+            list: 'MLTSSL',
+            category: 'IT/计算机类',
+            assessing_authority: 'ACS',
+            requirements: {
+                education: '相关专业学士学位或以上',
+                experience: '至少2年相关工作经验',
+                english: '雅思各项不低于6分'
+            }
+        },
+
+        // 更多工程类
+        '233512': {
+            title: '机械工程师',
+            list: 'MLTSSL',
+            category: '工程类',
+            assessing_authority: 'Engineers Australia',
+            requirements: {
+                education: '机械工程学士学位',
+                experience: '至少3年相关工作  验',
+                english: '雅思各项不低于6分',
+                other: '需要提供CDR报告'
+            }
+        },
+        '233513': {
+            title: '生产或工厂工程师',
+            list: 'MLTSSL',
+            category: '工程类',
+            assessing_authority: 'Engineers Australia',
+            requirements: {
+                education: '工程学士学   ',
+                experience: '至少3年相关工作经验',
+                english: '雅思各项不低于6分',
+                other: '需要提供CDR报告'
+            }
+        },
+
+        // 更多医疗卫生类
+        '253912': {
+            title: '急诊医生',
+            list: 'MLTSSL',
+            category: '医疗卫生类',
+            assessing_authority: 'Medical Board of Australia',
+            requirements: {
+                education: '医学学士学位或以上',
+                experience: '需完成专科培训',
+                english: 'OET B级或以上',
+                other: '需要通过AMC考试和专科认证'
+            }
+        },
+        '253913': {
+            title: '妇产科医生',
+            list: 'MLTSSL',
+            category: '医疗卫生类',
+            assessing_authority: 'Medical Board of Australia',
+            requirements: {
+                education: '医学学士学位或以上',
+                experience: '需完成专科培训',
+                english: 'OET B级或以上',
+                other: '需要通过AMC考试和专科认证'
+            }
+        },
+
+        // 更多教育类
+        '241213': {
+            title: '小学教师',
+            list: 'MLTSSL',
+            category: '教育类',
+            assessing_authority: 'AITSL',
+            requirements: {
+                education: '教育学士学位或以上',
+                experience: '至少1年教学经验',
+                english: '雅思各项不低于7分',
+                other: '需要获得教师注册资格'
+            }
+        },
+
+        // 农业和环境科学类
+        '234112': {
+            title: '农业科学家',
+            list: 'MLTSSL',
+            category: '农业和环境科学类',
+            assessing_authority: 'VETASSESS',
+            requirements: {
+                education: '农业相关学士学位',
+                experience: '至少3年相关工作经验',
+                english: '雅思各项不低于6分'
+            }
+        },
+        '234113': {
+            title: '森林科学家',
+            list: 'MLTSSL',
+            category: '农业和环境科学类',
+            assessing_authority: 'VETASSESS',
+            requirements: {
+                education: '森林科学相关学士学位',
+                experience: '至少3年相关工作经',
+                english: '雅思各项不低于6分'
+            }
+        }
+    };
+
+    function updateOccupationInfo(code) {
+        const details = document.getElementById('occupationDetails');
+        const occupation = occupationData[code];
+        
+        if (occupation) {
+            details.classList.remove('hidden');
+            details.innerHTML = `
+                <div class="bg-white rounded-lg p-4 border border-[var(--border-blue)]">
+                    <h4 class="font-medium text-[var(--dark-blue)]">职业详情</h4>
+                    <p class="text-sm text-[var(--text-blue)] mt-1">ANZSCO代码: ${code}</p>
+                    <p class="text-sm text-[var(--primary-blue)] mt-1">职业清单: ${occupation.list}</p>
+                    <p class="text-sm text-[var(--text-blue)] mt-3">
+                        <a href="https://immi.homeaffairs.gov.au/visas/working-in-australia/skill-occupation-list" 
+                           target="_blank" 
+                           class="text-[var(--primary-blue)] hover:underline">
+                           <i class="fas fa-external-link-alt mr-0.8"></i
+                           在移民局网站查看详细要求
+                        </a>
+                    </p>
+                </div>
+            `;
+        } else {
+            details.classList.add('hidden');
+        }
+    }
+    </script>
+
+    <script>
+    // 修改职业邀请数据对象
+    const occupationInviteData = {
+        '261313': { lastInviteScore: 85, inviteDate: '2024-09-05' },  // 软件工程师
+        '261312': { lastInviteScore: 100, inviteDate: '2024-09-05' }, // 开发程序员
+        '261311': { lastInviteScore: 90, inviteDate: '2024-09-05' },  // 分析程序员
+        '221111': { lastInviteScore: 95, inviteDate: '2024-09-05' },  // 会计师
+        
+        // 添加新的职业
+        '233911': { lastInviteScore: 95, inviteDate: '2024-09-05' },  // 航空工程师
+        '234111': { lastInviteScore: 95, inviteDate: '2024-09-05' },  // 农业顾问
+        '233912': { lastInviteScore: 95, inviteDate: '2024-09-05' },  // 农业工程师
+        '234112': { lastInviteScore: 95, inviteDate: '2024-09-05' },  // 农业科学家
+        '342111': { lastInviteScore: 65, inviteDate: '2024-09-05' },  // 空调和机械服务管道工
+        '232111': { lastInviteScore: 75, inviteDate: '2024-09-05' },  // 建筑师
+        '252711': { lastInviteScore: 75, inviteDate: '2024-09-05' },  // 听力学家
+        '234513': { lastInviteScore: 95, inviteDate: '2024-09-05' },  // 生物化学家
+        '233913': { lastInviteScore: 90, inviteDate: '2024-09-05' },  // 生物医学工程师
+        '234514': { lastInviteScore: 90, inviteDate: '2024-09-05' },  // 生物技术专家
+        '331111': { lastInviteScore: 65, inviteDate: '2024-09-05' },  // 瓦工
+        '394111': { lastInviteScore: 65, inviteDate: '2024-09-05' },  // 橱柜匠
+        '253312': { lastInviteScore: 80, inviteDate: '2024-09-05' },  // 心脏病专家
+        '253512': { lastInviteScore: 85, inviteDate: '2024-09-05' },  // 心胸外科医生
+        '331212': { lastInviteScore: 65, inviteDate: '2024-09-05' },  // 木匠
+        '331211': { lastInviteScore: 65, inviteDate: '2024-09-05' },  // 木匠和细木工
+        '351311': { lastInviteScore: 90, inviteDate: '2024-09-05' },  // 厨师
+        '233111': { lastInviteScore: 90, inviteDate: '2024-09-05' },  // 化学工程师
+        '234211': { lastInviteScore: 90, inviteDate: '2024-09-05' },  // 化学家
+        '134111': { lastInviteScore: 80, inviteDate: '2024-09-05' },  // 幼儿中心经理
+        '252111': { lastInviteScore: 80, inviteDate: '2024-09-05' },  // 脊椎按摩师
+        '233211': { lastInviteScore: 90, inviteDate: '2024-09-05' },  // 土木工程师
+        '312211': { lastInviteScore: 75, inviteDate: '2024-09-05' },  // 土木工程绘图员
+        '312212': { lastInviteScore: 75, inviteDate: '2024-09-05' },  // 土木工程技术员
+        '272311': { lastInviteScore: 85, inviteDate: '2024-09-05' },  // 临床心理学家
+        '263111': { lastInviteScore: 100, inviteDate: '2024-09-05' }, // 计算机网络和系统工程师
+        '133111': { lastInviteScore: 75, inviteDate: '2024-09-05' },  // 施工项目经理
+        '253917': { lastInviteScore: 80, inviteDate: '2024-09-05' },  // 诊断和介入放射科医生
+        '321212': { lastInviteScore: 65, inviteDate: '2024-09-05' },  // 柴油发动机技工
+        '233915': { lastInviteScore: 90, inviteDate: '2024-09-05' },  // 环境工程师
+        '241111': { lastInviteScore: 85, inviteDate: '2024-09-05' },  // 幼儿教育教师
+        '224311': { lastInviteScore: 90, inviteDate: '2024-09-05' },  // 经济学家
+        '233311': { lastInviteScore: 90, inviteDate: '2024-09-05' },  // 电气工程师
+        '341111': { lastInviteScore: 65, inviteDate: '2024-09-05' },  // 电工（普通）
+        '341112': { lastInviteScore: 70, inviteDate: '2024-09-05' },  // 电工（特级）
+        '233411': { lastInviteScore: 90, inviteDate: '2024-09-05' },  // 电子工程师
+        '253912': { lastInviteScore: 80, inviteDate: '2024-09-05' },  // 急诊医学专家
+        '133211': { lastInviteScore: 85, inviteDate: '2024-09-05' },  // 工程经理
+        '233999': { lastInviteScore: 85, inviteDate: '2024-09-05' },  // 工程专业人员（其他）
+        '233914': { lastInviteScore: 85, inviteDate: '2024-09-05' },  // 工程技师
+        '234312': { lastInviteScore: 90, inviteDate: '2024-09-05' },  // 环境顾问
+        '139912': { lastInviteScore: 85, inviteDate: '2024-09-05' },  // 环境  理
+        '234313': { lastInviteScore: 90, inviteDate: '2024-09-05' },  // 环境研究科学家
+        '221213': { lastInviteScore: 95, inviteDate: '2024-09-05' },  // 外部审计师
+        '333211': { lastInviteScore: 65, inviteDate: '2024-09-05' },  // 纤维抹灰剂
+        '234212': { lastInviteScore: 90, inviteDate: '2024-09-05' },  // 食   技术专家
+        '334114': { lastInviteScore: 65, inviteDate: '2024-09-05' },  // 煤气工
+        '253315': { lastInviteScore: 80, inviteDate: '2024-09-05' },  // 胃肠病学家
+        '253111': { lastInviteScore: 80, inviteDate: '2024-09-05' },  // 全科医生
+        '234412': { lastInviteScore: 90, inviteDate: '2024-09-05' },  // 地球物理学家
+        '233212': { lastInviteScore: 90, inviteDate: '2024-09-05' },  // 岩土工程师
+        '333111': { lastInviteScore: 65, inviteDate: '2024-09-05' },  // 玻璃工
+        '261111': { lastInviteScore: 100, inviteDate: '2024-09-05' }, // ICT业务分析师
+        '262112': { lastInviteScore: 100, inviteDate: '2024-09-05' }, // ICT安全专家
+        '233511': { lastInviteScore: 90, inviteDate: '2024-09-05' },  // 工业工程师
+        '253317': { lastInviteScore: 80, inviteDate: '2024-09-05' },  // 重症监护专家
+        '221214': { lastInviteScore: 95, inviteDate: '2024-09-05' },  // 内  审计师
+        '233213': { lastInviteScore: 90, inviteDate: '2024-09-05' },   // 排水工程师
+        '331213': { lastInviteScore: 65, inviteDate: '2024-09-05' },  // 细木工
+        '232112': { lastInviteScore: 75, inviteDate: '2024-09-05' },  // 景观设计师
+        '234511': { lastInviteScore: 90, inviteDate: '2024-09-05' },  // 生命科学家（普通）
+        '234599': { lastInviteScore: 95, inviteDate: '2024-09-05' },  // 生命科学家（非专业）
+        '341111': { lastInviteScore: 65, inviteDate: '2024-09-05' },  // 升降机技工
+        '221112': { lastInviteScore: 95, inviteDate: '2024-09-05' },  // 管理会计师
+        '224711': { lastInviteScore: 90, inviteDate: '2024-09-05' },  // 管理顾问
+        '234516': { lastInviteScore: 95, inviteDate: '2024-09-05' },  // 海洋生物学家
+        '233112': { lastInviteScore: 90, inviteDate: '2024-09-05' },  // 材料工程师
+        '233512': { lastInviteScore: 90, inviteDate: '2024-09-05' },  // 机械工程师
+        '251211': { lastInviteScore: 75, inviteDate: '2024-09-05' },  // 医学诊断放射技师
+        '234611': { lastInviteScore: 75, inviteDate: '2024-09-05' },  // 医学实验室科学家
+        '253999': { lastInviteScore: 75, inviteDate: '2024-09-05' },  // 执业医师（其他）
+        '322311': { lastInviteScore: 75, inviteDate: '2024-09-05' },  // 金属加工商
+        '234517': { lastInviteScore: 90, inviteDate: '2024-09-05' },  // 微生物学家
+        '254111': { lastInviteScore: 75, inviteDate: '2024-09-05' },  // 助产士
+        '233611': { lastInviteScore: 105, inviteDate: '2024-09-05' }, // 采矿工程师（石油除外）
+        '321211': { lastInviteScore: 90, inviteDate: '2024-09-05' },  // 汽车技工（通用）
+        '261211': { lastInviteScore: 90, inviteDate: '2024-09-05' },  // 多媒体专家
+        '233916': { lastInviteScore: 95, inviteDate: '2024-09-05' },  // 船舶建筑师
+        '251213': { lastInviteScore: 80, inviteDate: '2024-09-05' },  // 核医学技术员
+        '254411': { lastInviteScore: 85, inviteDate: '2024-09-05' },  // 执业护士
+        '254311': { lastInviteScore: 115, inviteDate: '2024-09-05' }, // 护理临床主任
+        '253913': { lastInviteScore: 90, inviteDate: '2024-09-05' },  // 妇产科医生
+        '252411': { lastInviteScore: 75, inviteDate: '2024-09-05' },  // 职业治疗师
+        '253914': { lastInviteScore: 85, inviteDate: '2024-09-05' },  // 眼科医生
+        '251411': { lastInviteScore: 80, inviteDate: '2024-09-05' },  // 验光师
+        '251912': { lastInviteScore: 80, inviteDate: '2024-09-05' },  // 矫形师或假肢师
+        '234999': { lastInviteScore: 100, inviteDate: '2024-09-05' }, // 其他空间科学家
+        '253321': { lastInviteScore: 80, inviteDate: '2024-09-05' },  // 儿科医生
+        '332211': { lastInviteScore: 65, inviteDate: '2024-09-05' },  // 油漆工
+        '253915': { lastInviteScore: 85, inviteDate: '2024-09-05' },  // 病理学家
+        '233612': { lastInviteScore: 95, inviteDate: '2024-09-05' },  // 石油工程师
+        '234914': { lastInviteScore: 95, inviteDate: '2024-09-05' },  // 物理学家
+        '252511': { lastInviteScore: 75, inviteDate: '2024-09-05' },  // 物理治疗师
+        '334111': { lastInviteScore: 65, inviteDate: '2024-09-05' },  // 水管工（普通）
+        '251912': { lastInviteScore: 80, inviteDate: '2024-09-05' },  // 足病医生
+        '134213': { lastInviteScore: 95, inviteDate: '2024-09-05' },  // 初级卫生保健组织经理
+        '233513': { lastInviteScore: 90, inviteDate: '2024-09-05' },  // 生产或工厂工程师
+        '253411': { lastInviteScore: 80, inviteDate: '2024-09-05' },  // 精神科医生
+        '272399': { lastInviteScore: 80, inviteDate: '2024-09-05' },  // 心理学家（其他）
+        '233213': { lastInviteScore: 75, inviteDate: '2024-09-05' },  // 工料测量师
+        '254416': { lastInviteScore: 75, inviteDate: '2024-09-05' },  // 注册护士（老年护理）
+        '254414': { lastInviteScore: 80, inviteDate: '2024-09-05' },  // 注册护士（儿童及家庭健康）
+        '254415': { lastInviteScore: 75, inviteDate: '2024-09-05' },  // 注册护士（重症监护及急救）
+        '254417': { lastInviteScore: 75, inviteDate: '2024-09-05' },  // 注册护士（残疾及康复）
+        '254499': { lastInviteScore: 75, inviteDate: '2024-09-05' },  // 注册护士（医疗执业）
+        '254499': { lastInviteScore: 75, inviteDate: '2024-09-05' },  // 注册护士（医疗）
+        '254418': { lastInviteScore: 75, inviteDate: '2024-09-05' },  // 注册护士（精神健康）
+        '254414': { lastInviteScore: 80, inviteDate: '2024-09-05' },  // 注册护士（  科）
+        '254413': { lastInviteScore: 75, inviteDate: '2024-09-05' },  // 注册护士（围手术期）
+        '254412': { lastInviteScore: 75, inviteDate: '2024-09-05' },  // 注册护士（外科）
+        '254499': { lastInviteScore: 75, inviteDate: '2024-09-05' },  // 注册护士（其他）
+        '334113': { lastInviteScore: 65, inviteDate: '2024-09-05' },  // 屋顶管道工
+        '241411': { lastInviteScore: 75, inviteDate: '2024-09-05' },  // 中学教师
+        '322311': { lastInviteScore: 75, inviteDate: '2024-09-05' },  // 钣金工
+        '399112': { lastInviteScore: 105, inviteDate: '2024-09-05' }, // 造船工
+        '272511': { lastInviteScore: 75, inviteDate: '2024-09-05' },  // 社会工作者
+        '261399': { lastInviteScore: 90, inviteDate: '2024-09-05' },  // 软件和应用程序程序员（其他）
+        '271311': { lastInviteScore: 90, inviteDate: '2024-09-05' },  // 律师
+        '333212': { lastInviteScore: 65, inviteDate: '2024-09-05' },  // 固体抹灰剂
+        '251214': { lastInviteScore: 80, inviteDate: '2024-09-05' },  // 超声技师
+        '241599': { lastInviteScore: 80, inviteDate: '2024-09-05' },  // 特殊教育教师（其他）
+        '241511': { lastInviteScore: 80, inviteDate: '2024-09-05' },  // 特殊教育老师
+        '253311': { lastInviteScore: 80, inviteDate: '2024-09-05' },  // 专科医生（全科医学）
+        '253999': { lastInviteScore: 80, inviteDate: '2024-09-05' },  // 专科医生（其他）
+        '252712': { lastInviteScore: 80, inviteDate: '2024-09-05' },  // 语言病理学家
+        '224113': { lastInviteScore: 90, inviteDate: '2024-09-05' },  // 统计员
+        '331112': { lastInviteScore: 70, inviteDate: '2024-09-05' },  // 石匠
+        '233214': { lastInviteScore: 75, inviteDate: '2024-09-05' },  // 结构工程师
+        '253511': { lastInviteScore: 80, inviteDate: '2024-09-05' },  // 外科医生（普通）
+        '232212': { lastInviteScore: 95, inviteDate: '2024-09-05' },  // 测量员
+        '261112': { lastInviteScore: 95, inviteDate: '2024-09-05' },  // 系统分析师
+        '221113': { lastInviteScore: 90, inviteDate: '2024-09-05' },  // 税务会计师
+        '263311': { lastInviteScore: 90, inviteDate: '2024-09-05' },  // 电信工程师
+        '313212': { lastInviteScore: 95, inviteDate: '2024-09-05' },  // 电信现场工程师
+        '263312': { lastInviteScore: 90, inviteDate: '2024-09-05' },  // 电信网络工程师
+        '233215': { lastInviteScore: 75, inviteDate: '2024-09-05' },  // 运输工程师
+        '242111': { lastInviteScore: 90, inviteDate: '2024-09-05' },  // 大学讲师
+        '253918': { lastInviteScore: 80, inviteDate: '2024-09-05' },  // 内科医生
+        '224512': { lastInviteScore: 95, inviteDate: '2024-09-05' },  // 估价师
+        '234711': { lastInviteScore: 95, inviteDate: '2024-09-05' },  // 兽医
+        '333411': { lastInviteScore: 65, inviteDate: '2024-09-05' },  // 墙地砖工
+        '322313': { lastInviteScore: 75, inviteDate: '2024-09-05' },  // 焊工（一级）
+        '234518': { lastInviteScore: 90, inviteDate: '2024-09-05' },   // 动物学家
+        '224111': { lastInviteScore: 90, inviteDate: '2024-09-05' }    // 精算师
+    };
+
+    // 修改 handleOccupationSelect 函数中显示邀请信息的部分
+    async function handleOccupationSelect(code) {
+        const scoreCards = document.getElementById('scoreCards');
+        const details = document.getElementById('occupationDetails');
+        
+        // 重置所有评分选项
+        document.querySelectorAll('select[name]').forEach(select => {
+            select.value = '0';
+        });
+        calculateTotal(); // 重置总分显示
+
+        if (code === '') {
+            details.classList.add('hidden');
+            scoreCards.classList.add('hidden');
+            return;
+        }
+        
+        if (code === 'not-listed') {
+            details.classList.remove('hidden');
+            details.innerHTML = `
+                <div class="bg-white rounded-lg p-4 border border-red-200">
+                    <h4 class="font-medium text-red-600">提示信  </h4>
+                    <p class="text-sm text-gray-600 mt-2">
+                        很抱歉，您的职业目前未被包含在其中。您可以在技术移民职业清单上寻找是否有相近职业可以申请，如果未发现，请联系服务咨询人员。
+                    </p>
+                </div>
+            `;
+            scoreCards.classList.add('hidden');
+            return;
+        }
+        
+        // 显示职业详情
+        details.classList.remove('hidden');
+        details.innerHTML = `
+            <div class="bg-white rounded-lg p-4 border border-[var(--border-blue)]">
+                <h4 class="font-medium text-[var(--dark-blue)]">职业详情</h4>
+                <p class="text-sm text-[var(--text-blue)] mt-1">ANZSCO代码: ${code}</p>
+                <p class="text-sm text-[var(--primary-blue)] mt-1">职业清单: MLTSSL</p>
+                
+                <!-- 添加最近邀请信息面板 -->
+                <div class="mt-4 bg-[var(--light-blue)] rounded-lg p-4">
+                    <h5 class="text-sm font-medium text-[var(--dark-blue)]">最近邀请轮次信息</h5>
+                    <div class="mt-2 space-y-2">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-[var(--text-blue)]">最低获邀分数:</span>
+                            <span id="lastInviteScore" class="font-medium text-[var(--primary-blue)]">加载中...</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-[var(--text-blue)]">邀请日期:</span>
+                            <span id="inviteDate" class="font-medium text-[var(--primary-blue)]">加载中...</span>
+                        </div>
+                    </div>
+                    <div class="mt-3 text-xs text-gray-500">
+                        <i class="fas fa-info-circle mr-1"></i>
+                        数据来源：澳洲移民局官方数据
+                        <a href="https://immi.homeaffairs.gov.au/visas/working-in-australia/skillselect/previous-rounds" 
+                           target="_blank"
+                           class="text-[var(--primary-blue)] hover:underline ml-1">
+                           查看详情
+                        </a>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        // 获取并显示最新邀请信息
+        try {
+            const data = occupationInviteData[code];
+            if (data) {
+                document.getElementById('lastInviteScore').textContent = `${data.lastInviteScore}分`;
+                document.getElementById('inviteDate').textContent = new Date(data.inviteDate).toLocaleDateString('zh-CN');
+            } else {
+                document.getElementById('lastInviteScore').textContent = '暂无数据';  // 删除 *
+                document.getElementById('inviteDate').textContent = '暂无数据';
+                // 添加解释说明
+                const infoPanel = document.querySelector('.mt-3.text-xs.text-gray-500');
+                infoPanel.innerHTML = `
+                    <i class="fas fa-info-circle mr-1"></i>
+                    结果可能表明没有可供邀请的 EOI，或者有可用的 EOI 但不符合接收邀请的参数。
+                    <br><br>
+                    数据来源：澳洲移民局官方数据
+                    <a href="https://immi.homeaffairs.gov.au/visas/working-in-australia/skillselect/previous-rounds" 
+                       target="_blank"
+                       class="text-[var(--primary-blue)] hover:underline ml-1">
+                       查看详情
+                    </a>
+                `;
+            }
+        } catch (error) {
+            console.error('获取邀请信息失败:', error);
+            document.getElementById('lastInviteScore').textContent = '暂无数据';  // 删除 *
+            document.getElementById('inviteDate').textContent = '暂无数据';
+            // 添加解释说明
+            const infoPanel = document.querySelector('.mt-3.text-xs.text-gray-500');
+            infoPanel.innerHTML = `
+                <i class="fas fa-info-circle mr-1"></i>
+                结果可能表明没有可供邀请的 EOI，或者有可用的 EOI 但不符合接收邀请的参数。
+                <br><br>
+                数据来源：澳洲移民局官方数据
+                <a href="https://immi.homeaffairs.gov.au/visas/working-in-australia/skillselect/previous-rounds" 
+                   target="_blank"
+                   class="text-[var(--primary-blue)] hover:underline ml-1">
+                   查看详情
+                </a>
+            `;
+        }
+        
+        // 显示评分卡片
+        scoreCards.classList.remove('hidden');
+    }
+
+    // 修改趋势图显示函数
+    function updateInviteScoreChart(history) {
+        const ctx = document.getElementById('inviteScoreChart').getContext('2d');
+        
+        if (window.inviteScoreChart) {
+            window.inviteScoreChart.destroy();
+        }
+        
+        window.inviteScoreChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: history.map(h => new Date(h.date).toLocaleDateString('zh-CN')),
+                datasets: [{
+                    label: '最低获邀分数',
+                    data: history.map(h => h.score),
+                    borderColor: 'rgb(0, 77, 142)',
+                    tension: 0.1,
+                    fill: false,
+                    pointBackgroundColor: 'rgb(0, 77, 142)',
+                    pointRadius: 4,
+                    pointHoverRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const dataPoint = history[context.dataIndex];
+                                return [
+                                    `分数: ${context.parsed.y}分`,
+                                    `邀请人数: ${dataPoint.inviteCount}人`,
+                                    `总人数: ${dataPoint.totalInvites}人`
+                                ];
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        min: Math.min(...history.map(h => h.score)) - 5,
+                        max: Math.max(...history.map(h => h.score)) + 5,
+                        ticks: {
+                            stepSize: 5
+                        },
+                        title: {
+                            display: true,
+                            text: '最低获邀分数'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: '邀请日期'
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    function calculateTotal() {
+        const scores = {
+            age: 0,
+            english: 0,
+            experience: 0,
+            education: 0,
+            ausStudy: 0,
+            ausWork: 0,
+            professional: 0,
+            stateNomination: 0,
+            other: 0
+        };
+        
+        // 获取各项分数
+        document.querySelectorAll('select[name]').forEach(select => {
+            scores[select.name] = parseInt(select.value) || 0;
+        });
+        
+        // 计算总分
+        const total = Object.values(scores).reduce((sum, score) => sum + score, 0);
+        
+        // 更新度条和总分显示
+        const progressBar = document.getElementById('progressBar');
+        const totalScore = document.getElementById('totalScore');
+        const percentage = (total / 105) * 100;
+        
+        progressBar.style.width = `${percentage}%`;
+        totalScore.textContent = total;
+        
+        // 获取当前选择的职业和最低获邀分数
+        const occupationSelect = document.getElementById('occupationSelect');
+        const selectedOccupation = occupationSelect.value;
+        const inviteData = occupationInviteData[selectedOccupation];
+        const inviteHint = document.getElementById('inviteHint');
+        
+        // 如果没有   择职业，隐藏提示
+        if (!selectedOccupation || !inviteData) {
+            inviteHint.classList.add('hidden');
+            return;
+        }
+        
+        // 显示提示信息
+        inviteHint.classList.remove('hidden');
+        
+        // 更新进度条颜色
+        if (total >= inviteData.lastInviteScore) {
+            progressBar.style.background = 'linear-gradient(90deg, var(--primary-blue) 0%, var(--secondary-blue) 100%)';
+            totalScore.style.color = 'var(--primary-blue)';
+            
+            // 显示达标提示
+            inviteHint.innerHTML = `
+                <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+                    <p class="text-green-700 font-medium flex items-center">
+                        <i class="fas fa-check-circle mr-2"></i>
+                        恭喜！您的分数(${total}分)超过该职   上一轮最低获邀分数(${inviteData.lastInviteScore}分)
+                    </p>
+                    <p class="text-sm text-green-600 mt-2">
+                        建议您：
+                        <ul class="list-disc list-inside mt-1 space-y-1">
+                            <li>准备相关材料，包括学历认证、职业评估等</li>
+                            <li>确保雅思成绩在有效期内</li>
+                            <li>关注每月的邀请轮次信息</li>
+                        </ul>
+                    </p>
+                </div>
+            `;
+        } else {
+            progressBar.style.background = '#ef4444';
+            totalScore.style.color = '#ef4444';
+            
+            // 显示未达标提示
+            inviteHint.innerHTML = `
+                <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                    <p class="text-yellow-700 font-medium flex items-center">
+                        <i class="fas fa-exclamation-circle mr-2"></i>
+                        您的分数(${total}分)暂时低于该职业上一轮最低获邀分数(${inviteData.lastInviteScore}分)
+                    </p>
+                    <p class="text-sm text-yellow-600 mt-2">
+                        不要灰心，您可以：
+                        <ul class="list-disc list-inside mt-1 space-y-1">
+                            <li>继续等待职业轮动，分数要求可能会降低</li>
+                            <li>考虑提高英语成绩或获取更多工作经验</li>
+                            <li>咨询我们的服务人员，探讨其他可行的移民途径</li>
+                        </ul>
+                    </p>
+                    <div class="mt-3 text-sm">
+                        <a href="#" onclick="toggleContactCard()" class="text-[var(--primary-blue)] hover:underline flex items-center">
+                            <i class="fas fa-comments mr-1"></i>
+                            联系咨询顾问
+                        </a>
+                    </div>
+                </div>
+            `;
+        }
+    }
+    </script>
+
+    <script>
+    function showVisaDetails(type) {
+        const visaInfo = visaTypes[type];
+        if (visaInfo) {
+            const visaInfoPanel = document.getElementById('visaInfo');
+            visaInfoPanel.innerHTML = `
+                <div class="flex items-start">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-info-circle text-[var(--primary-blue)] mt-1"></i>
+                    </div>
+                    <div class="ml-3 w-full">
+                        <h3 class="text-lg font-medium text-gray-900">${visaInfo.title}</h3>
+                        <div class="mt-2 text-sm text-gray-600">
+                            ${visaInfo.description}
++                           <div class="mt-2">
++                               <a href="https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/${type}" 
++                                  target="_blank" 
++                                  class="text-[var(--primary-blue)] hover:underline inline-flex items-center">
++                                   <i class="fas fa-external-link-alt text-xs mr-1"></i>
++                                   访问澳洲移民局官网
++                               </a>
++                           </div>
+                        </div>
+                        <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <span class="text-[var(--primary-blue)] font-medium">申请条件：</span>
+                                <ul class="list-disc list-inside text-gray-700 mt-2 space-y-2">
+                                    ${visaInfo.requirements.map(req => `<li>${req}</li>`).join('')}
+                                </ul>
+                            </div>
+                            <div class="space-y-4">
+                                <div>
+                                    <span class="text-[var(--primary-blue)] font-medium">处理时间：</span>
+                                    <div class="text-gray-700 mt-1">${visaInfo.processing}</div>
+                                </div>
+                                <div>
+                                    <span class="text-[var(--primary-blue)] font-medium">申请费用：</span>
+                                    <div class="text-gray-700 mt-1">${visaInfo.fee}</div>
+                                </div>
+                            </div>
+                        </div>
+                        ${visaInfo.occupationStreams ? `
+                            <div class="mt-6 border-t border-gray-100 pt-4">
+                                <h4 class="text-base font-medium text-[var(--primary-blue)] mb-4">职业类别</h4>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    ${visaInfo.occupationStreams.map(stream => `
+                                        <div class="bg-white p-4 rounded-lg border border-[var(--border-blue)] hover:shadow-md transition-shadow">
+                                            <h5 class="font-medium text-[var(--dark-blue)]">${stream.title}</h5>
+                                            <p class="text-sm text-[var(--text-blue)] mt-1">${stream.description}</p>
+                                            <div class="mt-2">
+                                                <a href="${stream.listUrl}" 
+                                                   target="_blank" 
+                                                   class="text-xs text-[var(--primary-blue)] hover:underline flex items-center">
+                                                   <i class="fas fa-external-link-alt mr-1"></i>
+                                                   ${stream.listName}
+                                               </a>
+                                            </div>
+                                            <div class="mt-2 text-sm">
+                                                <span class="text-[var(--text-blue)]">申请费：</span>
+                                                <span class="text-[var(--primary-blue)]">${stream.fee}</span>
+                                            </div>
+                                            <p class="mt-2 text-xs text-gray-500">${stream.details}</p>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+        }
+    }
+
+    function resetVisaDetails() {
+        // 如果有选中的签证类型，显示选中的签证信息
+        const activeBtn = document.querySelector('.visa-type-btn.active');
+        if (activeBtn) {
+            showVisaDetails(activeBtn.dataset.visaType);
+        }
+    }
+    </script>
+
+    <!-- 添加搜索相关的JavaScript -->
+    <script>
+    function toggleSearch() {
+        const searchInput = document.getElementById('searchInput');
+        
+        if (searchInput.classList.contains('opacity-0')) {
+            // 显示搜索框
+            searchInput.classList.remove('opacity-0', 'w-0');
+            searchInput.classList.add('opacity-100', 'w-64');
+            searchInput.focus();
+        } else {
+            // 隐藏搜索框
+            searchInput.classList.remove('opacity-100', 'w-64');
+            searchInput.classList.add('opacity-0', 'w-0');
+            searchInput.value = '';
+        }
+    }
+
+    // 点击页面其他地方时关闭搜索框
+    document.addEventListener('click', (e) => {
+        const searchInput = document.getElementById('searchInput');
+        const searchContainer = e.target.closest('.relative');
+        
+        if (!searchContainer && !searchInput.classList.contains('opacity-0')) {
+            toggleSearch();
+        }
+    });
+    </script>
+
+    <script>
+    function handleSearch(value) {
+        const searchResults = document.getElementById('searchResults');
+        
+        if (!value.trim()) {
+            searchResults.classList.add('hidden');
+            return;
+        }
+
+        const searchTerm = value.toLowerCase();
+        const results = [];
+
+        // 搜索职业数据
+        const occupationResults = Object.entries(occupationData)
+            .filter(([code, data]) => 
+                code.includes(searchTerm) || 
+                data.title.toLowerCase().includes(searchTerm) ||
+                data.category.toLowerCase().includes(searchTerm)
+            )
+            .map(([code, data]) => ({
+                type: 'occupation',
+                code: code,
+                title: data.title,
+                category: data.category,
+                icon: 'fa-briefcase'
+            }));
+
+        // 搜索签证类型
+        const visaTypes = {
+            '189': { title: '独立技术移民', description: '无需担保的永久居留签证' },
+            '190': { title: '州担保技术移民', description: '需要州政府担保的永久居留签证' },
+            '491': { title: '偏远地区技术移民', description: '偏远地区担保的临时居留签证' },
+            '186': { title: '雇主担保永居签证', description: '雇主提名的永久居留签证' },
+            '482': { title: '临时技术工人签证', description: '雇主担保的临时工作签证' },
+            '485': { title: '毕业生临时签证', description: '澳洲留学毕业后的临时工作签证' }
+        };
+
+        const visaResults = Object.entries(visaTypes)
+            .filter(([code, data]) =>
+                code.includes(searchTerm) ||
+                data.title.toLowerCase().includes(searchTerm)
+            )
+            .map(([code, data]) => ({
+                type: 'visa',
+                code: code,
+                title: `${code}签证 - ${data.title}`,
+                description: data.description,
+                icon: 'fa-passport'
+            }));
+
+        // 合并结果
+        results.push(...visaResults, ...occupationResults.slice(0, 6));
+
+        // 显示搜索结果
+        if (results.length > 0) {
+            searchResults.innerHTML = results.map(result => `
+                <div class="p-3 hover:bg-gray-50 cursor-pointer border-b last:border-b-0"
+                     onclick="selectSearchResult('${result.type}', '${result.code}')">
+                    <div class="flex items-center">
+                        <i class="fas ${result.icon} text-[var(--primary-blue)] mr-3"></i>
+                        <div>
+                            <div class="font-medium text-[var(--dark-blue)]">${result.title}</div>
+                            ${result.type === 'visa' ? 
+                                `<div class="text-sm text-gray-500">${result.description}</div>` :
+                                `<div class="text-sm text-[var(--primary-blue)]">${result.category}</div>`
+                            }
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            searchResults.classList.remove('hidden');
+        } else {
+            searchResults.innerHTML = `
+                <div class="p-3 text-center text-gray-500">
+                    未找到相关结果
+                </div>
+            `;
+            searchResults.classList.remove('hidden');
+        }
+    }
+
+    // 修改选择搜索结果的函数
+    function selectSearchResult(type, code) {
+        const searchInput = document.getElementById('searchInput');
+        const searchResults = document.getElementById('searchResults');
+        
+        if (type === 'occupation') {
+            // 选择职业
+            const occupationSelect = document.getElementById('occupationSelect');
+            occupationSelect.value = code;
+            handleOccupationSelect(code);
+        } else if (type === 'visa') {
+            // 选择签证类型
+            switchVisaType(code);
+        }
+        
+        // 清空搜索框并隐   结果
+        searchInput.value = '';
+        searchResults.classList.add('hidden');
+        toggleSearch(); // 关闭搜索框
+    }
+
+    // 点击页面其他地方时关闭搜索框
+    document.addEventListener('click', (e) => {
+        const searchInput = document.getElementById('searchInput');
+        const searchContainer = e.target.closest('.relative');
+        
+        if (!searchContainer && !searchInput.classList.contains('opacity-0')) {
+            toggleSearch();
+        }
+    });
+    </script>
+
+    <!-- 在主要内容区域添加统计面板 -->
+    <div id="statisticsPanel" class="hidden">
+        <div class="bg-white p-6 max-w-[1000px] mx-auto">
+            <!-- 数据总览 -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+                <div class="stat-card bg-white rounded-xl p-6 border border-[var(--border-blue)]">
+                    <div class="text-sm text-[var(--text-blue)]">2024年总签证数量</div>
+                    <div class="text-3xl font-bold text-[var(--primary-blue)] mt-3 number-animate">255,000</div>
+                    <div class="flex items-center mt-2">
+                        <i class="fas fa-arrow-up text-green-500 mr-1"></i>
+                        <span class="text-green-500">26.9%</span>
+                        <span class="text-sm text-gray-500 ml-1">同比增长</span>
+                    </div>
+                </div>
+                <div class="stat-card bg-white rounded-xl p-6 border border-[var(--border-blue)]">
+                    <div class="text-sm text-[var(--text-blue)]">技术移民签证</div>
+                    <div class="text-3xl font-bold text-[var(--primary-blue)] mt-3 number-animate">109,000</div>
+                    <div class="flex items-center mt-2">
+                        <i class="fas fa-arrow-up text-green-500 mr-1"></i>
+                        <span class="text-green-500">28.2%</span>
+                        <span class="text-sm text-gray-500 ml-1">同比增长</span>
+                    </div>
+                </div>
+                <div class="stat-card bg-white rounded-xl p-6 border border-[var(--border-blue)]">
+                    <div class="text-sm text-[var(--text-blue)]">州担保签证</div>
+                    <div class="text-3xl font-bold text-[var(--primary-blue)] mt-3 number-animate">65,000</div>
+                    <div class="flex items-center mt-2">
+                        <i class="fas fa-arrow-up text-green-500 mr-1"></i>
+                        <span class="text-green-500">44.4%</span>
+                        <span class="text-sm text-gray-500 ml-1">同比增长</span>
+                    </div>
+                </div>
+                <div class="stat-card bg-white rounded-xl p-6 border border-[var(--border-blue)]">
+                    <div class="text-sm text-[var(--text-blue)]">雇主担保签证</div>
+                    <div class="text-3xl font-bold text-[var(--primary-blue)] mt-3 number-animate">42,000</div>
+                    <div class="flex items-center mt-2">
+                        <i class="fas fa-arrow-up text-green-500 mr-1"></i>
+                        <span class="text-green-500">20.0%</span>
+                        <span class="text-sm text-gray-500 ml-1">同比增长</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 图表区域 -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="chart-container bg-white rounded-xl p-6 border border-[var(--border-blue)]">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-medium text-[var(--dark-blue)]">签证类型分布</h3>
+                        <div class="text-sm text-[var(--text-blue)]">
+                            <i class="fas fa-info-circle"></i>
+                        </div>
+                    </div>
+                    <div class="h-[300px]">
+                        <canvas id="visaTypeChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-container bg-white rounded-xl p-6 border border-[var(--border-blue)]">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-medium text-[var(--dark-blue)]">各州签证分布</h3>
+                        <div class="text-sm text-[var(--text-blue)]">
+                            <i class="fas fa-info-circle"></i>
+                        </div>
+                    </div>
+                    <div class="h-[300px]">
+                        <canvas id="stateChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-container bg-white rounded-xl p-6 border border-[var(--border-blue)]">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-medium text-[var(--dark-blue)]">热门职业分布</h3>
+                        <div class="text-sm text-[var(--text-blue)]">
+                            <i class="fas fa-info-circle"></i>
+                        </div>
+                    </div>
+                    <div class="h-[300px]">
+                        <canvas id="occupationChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-container bg-white rounded-xl p-6 border border-[var(--border-blue)]">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-medium text-[var(--dark-blue)]">签证增长趋势</h3>
+                        <div class="text-sm text-[var(--text-blue)]">
+                            <i class="fas fa-info-circle"></i>
+                        </div>
+                    </div>
+                    <div class="h-[300px]">
+                        <canvas id="trendChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 数据来源说明 -->
+            <div class="mt-6 text-sm text-gray-500 text-center">
+                数据来源：澳大利亚内政部官方统计
+                <a href="https://www.homeaffairs.gov.au/research-and-statistics/statistics/visa-statistics" 
+                   target="_blank" 
+                   class="text-[var(--primary-blue)] hover:underline ml-2">
+                    查看详细数据
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 在body标签结束前添加对话框 -->
+    <div id="chatWidget" class="fixed bottom-24 right-12 z-50">
+        <!-- 联系方式卡片 -->
+        <div id="contactCard" class="bg-white rounded-2xl shadow-xl p-6 mb-4 w-96 transform transition-all duration-300 scale-0 origin-bottom-right border border-[var(--border-blue)]">
+            <h3 class="text-xl font-medium text-[var(--dark-blue)] mb-3">联系我们</h3>
+            <p class="text-gray-600 text-sm mb-6">如果您仍对移民要求有疑问，可以通过下方联系方式联系我们：</p>
+            <div class="space-y-4">
+                <!-- 小红书联系方式 -->
+                <div class="contact-item p-3 rounded-lg hover:bg-[var(--primary-light)] transition-all cursor-pointer">
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-red-50 rounded-full flex items-center justify-center">
+                            <i class="fas fa-book text-red-500 text-lg"></i>
+                        </div>
+                        <div class="ml-4">
+                            <div class="text-sm text-gray-500">小红书</div>
+                            <div class="font-medium">450922404</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 微信联系方式 -->
+                <div class="contact-item p-3 rounded-lg hover:bg-[var(--primary-light)] transition-all cursor-pointer">
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-green-50 rounded-full flex items-center justify-center">
+                            <i class="fab fa-weixin text-green-500 text-xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <div class="text-sm text-gray-500">微信</div>
+                            <div class="font-medium">mctang001</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 修改悬浮按钮，添加 tooltip -->
+        <button 
+            onclick="toggleContactCard()"
+            class="group bg-[var(--primary-blue)] hover:bg-[var(--primary-hover)] text-white rounded-full w-16 h-16 flex items-center justify-center shadow-xl transition-all duration-300 hover:scale-110 hover:shadow-2xl relative"
+            style="position: fixed; bottom: 24px; right: 48px;"
+        >
+            <i id="chatIcon" class="fas fa-comments text-2xl"></i>
+            
+            <!-- 悬浮提示 -->
+            <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 absolute bottom-full right-0 mb-2 w-48 bg-white rounded-lg shadow-lg p-3 text-sm text-gray-600 border border-[var(--border-blue)]">
+                <div class="space-y-2">
+                    <div class="flex items-center">
+                        <i class="fas fa-book text-red-500 w-5"></i>
+                        <span>小红书：450922404</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fab fa-weixin text-green-500 w-5"></i>
+                        <span>微信：mctang001</span>
+                    </div>
+                </div>
+                <!-- 小三角 -->
+                <div class="absolute bottom-0 right-6 transform translate-y-full">
+                    <div class="w-2 h-2 bg-white rotate-45 transform -translate-y-1 border-r border-b border-[var(--border-blue)]"></div>
+                </div>
+            </div>
+        </button>
+    </div>
+
+    <!-- 添加缺失的toggleContactCard函数 -->
+    <script>
+    function toggleContactCard() {
+        const contactCard = document.getElementById('contactCard');
+        const chatIcon = document.getElementById('chatIcon');
+        
+        if (contactCard.classList.contains('show')) {
+            // 隐藏联系方式卡片
+            contactCard.classList.remove('show');
+            chatIcon.classList.remove('fa-times');
+            chatIcon.classList.add('fa-comments');
+        } else {
+            // 显示联系方式卡片
+            contactCard.classList.add('show');
+            chatIcon.classList.remove('fa-comments');
+            chatIcon.classList.add('fa-times');
+        }
+    }
+
+    // 添加点击其他区域关闭卡片的功能
+    document.addEventListener('click', (e) => {
+        const chatWidget = document.getElementById('chatWidget');
+        const contactCard = document.getElementById('contactCard');
+        const chatIcon = document.getElementById('chatIcon');
+        
+        if (!chatWidget.contains(e.target) && contactCard.classList.contains('show')) {
+            contactCard.classList.remove('show');
+            chatIcon.classList.remove('fa-times');
+            chatIcon.classList.add('fa-comments');
+        }
+    });
+    </script>
+
+    <!-- 修改 showStatistics 函数 -->
+    <script>
+    function showStatistics() {
+        // 隐藏其他内容
+        const calculatorForm = document.getElementById('calculatorForm');
+        if (calculatorForm) calculatorForm.classList.add('hidden');
+        
+        const visaInfo = document.getElementById('visaInfo');
+        if (visaInfo) visaInfo.classList.add('hidden');
+        
+        // 显示统计面板
+        const statsPanel = document.getElementById('statisticsPanel');
+        statsPanel.classList.remove('hidden');
+        
+        // 初始化图表
+        setTimeout(() => {
+            initializeCharts();
+        }, 100);
+        
+        // 移除其他按钮的active状态
+        document.querySelectorAll('.visa-type-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        
+        // 给统计按钮添加active状态
+        const statsButton = document.querySelector('button[onclick="showStatistics()"]');
+        if (statsButton) {
+            statsButton.classList.add('active');
+        }
+    }
+
+    // 修改 initializeCharts 函数
+    function initializeCharts() {
+        // 添加图表动画选项
+        Chart.defaults.animation = {
+            duration: 2000,
+            easing: 'easeOutQuart'
+        };
+        
+        // 图表通用配置
+        const commonOptions = {
+            animation: {
+                onComplete: () => {
+                    // 图表加载完成后的回调
+                }
+            },
+            transitions: {
+                active: {
+                    animation: {
+                        duration: 400
+                    }
+                }
+            },
+            plugins: {
+                tooltip: {
+                    animation: {
+                        duration: 200
+                    }
+                }
+            }
+        };
+
+        // 签证类型分布图
+        const visaTypeCtx = document.getElementById('visaTypeChart').getContext('2d');
+        new Chart(visaTypeCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['189独立技术', '190州担保', '491偏远地区', '186雇主担保', '485毕业生'],
+                datasets: [{
+                    data: [42000, 35000, 30000, 25000, 38000],
+                    backgroundColor: [
+                        'rgb(0, 77, 142)',
+                        'rgb(51, 122, 183)',
+                        'rgb(75, 192, 192)',
+                        'rgb(153, 102, 255)',
+                        'rgb(255, 99, 132)'
+                    ]
+                }]
+            },
+            options: {
+                ...commonOptions,
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: {
+                            font: { size: 11 },
+                            generateLabels: function(chart) {
+                                const data = chart.data;
+                                return data.labels.map((label, i) => ({
+                                    text: `${label}: ${data.datasets[0].data[i].toLocaleString()}`,
+                                    fillStyle: data.datasets[0].backgroundColor[i],
+                                    index: i
+                                }));
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // 各州分布图
+        const stateCtx = document.getElementById('stateChart').getContext('2d');
+        new Chart(stateCtx, {
+            type: 'bar',
+            data: {
+                labels: ['新南威尔士', '维多利亚', '昆士兰', '南澳', '西澳', '塔斯马尼亚'],
+                datasets: [{
+                    label: '签证数量',
+                    data: [85000, 75000, 45000, 25000, 35000, 8000],
+                    backgroundColor: 'rgba(0, 77, 142, 0.8)',
+                    borderColor: 'rgb(0, 77, 142)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                ...commonOptions,
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: '签证数量'
+                        }
+                    }
+                }
+            }
+        });
+
+        // 热门职业分布图
+        const occupationCtx = document.getElementById('occupationChart').getContext('2d');
+        new Chart(occupationCtx, {
+            type: 'bar',
+            data: {
+                labels: ['软件工程师', '注册护士', '会计师', '土木工程师', '教师'],
+                datasets: [{
+                    label: '申请人数',
+                    data: [15800, 12500, 8900, 7600, 6200],
+                    backgroundColor: [
+                        'rgba(0, 77, 142, 0.8)',
+                        'rgba(51, 122, 183, 0.8)',
+                        'rgba(75, 192, 192, 0.8)',
+                        'rgba(153, 102, 255, 0.8)',
+                        'rgba(255, 99, 132, 0.8)'
+                    ]
+                }]
+            },
+            options: {
+                ...commonOptions,
+                indexAxis: 'y',
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: '申请人数'
+                        }
+                    }
+                }
+            }
+        });
+
+        // 签证增长趋势图
+        const trendCtx = document.getElementById('trendChart').getContext('2d');
+        new Chart(trendCtx, {
+            type: 'line',
+            data: {
+                labels: ['2023 Q3', '2023 Q4', '2024 Q1', '2024 Q2'],
+                datasets: [{
+                    label: '签证数量',
+                    data: [58000, 62000, 65000, 70000],
+                    borderColor: 'rgb(0, 77, 142)',
+                    backgroundColor: 'rgba(0, 77, 142, 0.1)',
+                    tension: 0.3,
+                    fill: true
+                }]
+            },
+            options: {
+                ...commonOptions,
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: '签证数量'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: '季度'
+                        }
+                    }
+                }
+            }
+        });
+    }
+    </script>
+</body>
+</html> 

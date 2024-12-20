@@ -720,7 +720,7 @@
                                 <!-- IT/计算机类 -->
                                 <optgroup label="IT/计算机类 (MLTSSL)">
                                     <option value="135112">ICT项目经理 (135112)</option>
-                                    <option value="261111">ICT业务分析师 (261111)</option>
+                                    <option value="261111">ICT业务分  师 (261111)</option>
                                     <option value="261112">系统分析师 (261112)</option>
                                     <option value="261211">多媒体专家 (261211)</option>
                                     <option value="261212">网页开发员 (261212)</option>
@@ -956,12 +956,12 @@
                                     </h3>
                                     <select class="w-full p-3 border rounded-lg" name="experience" onchange="calculateTotal()">
                                         <option value="0">请选择工作年限</option>
-                                        <option value="5">1-3年</option>
-                                        <option value="10">3-5年</option>
-                                        <option value="15">5-8年</option>
-                                        <option value="20">8年以上</option>
+                                        <option value="0">境外相关工作经验3年以下 (0分)</option>
+                                        <option value="5">境外相关工作经验3-5年 (5分)</option>
+                                        <option value="10">境外相关工作经验5-8年 (10分)</option>
+                                        <option value="15">境外相关工作经验8年以上 (15分)</option>
                                     </select>
-                                    <div class="mt-2 text-xs text-gray-500">分数：1-3年(5分)、3-5年(10分)、5-8年(15分)、8年以上(20分)</div>
+                                    <div class="mt-2 text-xs text-gray-500">注：仅计算境外相关工作经验</div>
                                 </div>
 
                                 <!-- 学历评分 -->
@@ -990,21 +990,6 @@
                                         <option value="5">在澳洲学习至少2年 (5分)</option>
                                         <option value="5">在偏远地区学习至少2年 (5分)</option>
                                         <option value="0">无澳洲学习经验 (0分)</option>
-                                    </select>
-                                </div>
-
-                                <!-- 澳   工作经验 -->
-                                <div class="bg-white p-6 rounded-xl border border-[var(--border-blue)] shadow-sm">
-                                    <h3 class="text-lg font-medium mb-4 flex items-center">
-                                        <i class="fas fa-building text-[var(--primary-blue)] mr-3"></i>
-                                        澳洲工作经验
-                                    </h3>
-                                    <select class="w-full p-3 border rounded-lg" name="ausWork" onchange="calculateTotal()">
-                                        <option value="0">请选择工作年限</option>
-                                        <option value="5">1-3年 (5分)</option>
-                                        <option value="10">3-5年 (10分)</option>
-                                        <option value="15">5-8年 (15分)</option>
-                                        <option value="20">8年以上 (20分)</option>
                                     </select>
                                 </div>
 
@@ -1335,7 +1320,7 @@
         const visaTypes = {
             '189': {
                 title: '189签证 - 独立技术移民',
-                description: '这是一个永久居留签证，适用于已通过职业评估，且具备相关技能和资格的申请人。无需雇主或州政府担保。',
+                description: '这是一个永久居留签证，适用于已通过职业评估，且具备相关技能和资格的申请人。无需   主或州政府担保。',
                 requirements: [
                     '年龄不超过45岁',
                     '职业在<a href="https://immi.homeaffairs.gov.au/visas/working-in-australia/skilled-occupation-list" target="_blank" class="font-bold text-[var(--primary-blue)] hover:text-[var(--primary-blue)] hover:underline">技术移民职业清单(MLTSSL)</a>上',
@@ -1543,7 +1528,7 @@
             },
             '188': {
                 title: '188签证 - 商业创新和投资签证',
-                description: '这是一个临时签证，适用于有意在澳大利亚开展商业活动或进行投资的申请人。签证有效期为5年。',
+                description: '这是一个临时签证，适用于有意在澳大利亚开展商业活动或进行   资的申请人   签证有效期为5年。',
                 requirements: [
                     '年龄不超过55岁（某些情况可放宽）',
                     '申请途径（二选一）：',
@@ -1578,7 +1563,7 @@
             },
             '485': {
                 title: '485签证 - 毕业生临时签证',
-                description: '澳洲留学毕业后的临时工作签证',
+                description: '澳洲留学毕业后   临时工作签证',
                 requirements: [
                     '年龄要求：',
                     '必须未满<a href="https://immi.homeaffairs.gov.au/help-support/meeting-our-requirements/age" target="_blank" class="text-[var(--primary-blue)] hover:underline">50岁</a>',
